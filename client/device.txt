@@ -1,0 +1,8 @@
+Bật tắt đèn, quạt trong nhà : đèn leb , quạt , sensor hồng ngoại, cảm biến ánh sáng , cam lab (AI).
+
+Điều chỉnh nhiệt độ, đổ ẩm : sesnor DHT20 , LCD để thông báo
+
+Tự động mở cửa : sensor khoảng cách, LCD, LED RGB, động cơ servo
+
+
+
