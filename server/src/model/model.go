@@ -1,7 +1,5 @@
 package model
 
-type Trainer struct {
+type User struct {
 	Name string
-	Age  int
-	City string
 }
