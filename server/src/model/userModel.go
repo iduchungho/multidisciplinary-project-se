@@ -9,18 +9,18 @@ type User struct {
 	Actions   []Action `json:"actions"`
 }
 
-func (u *User) Get() {
-
+func (u *User) Get() (interface{}, error) {
+	return nil, nil
 }
 
-func (u *User) Delete() {
-
+func (u *User) Delete() (interface{}, error) {
+	return nil, nil
 }
 
-func (u *User) Update() {
-
+func (u *User) Update() (interface{}, error) {
+	return nil, nil
 }
 
-func (u *User) Insert() {
-
+func (u *User) Insert() (interface{}, error) {
+	return nil, nil
 }

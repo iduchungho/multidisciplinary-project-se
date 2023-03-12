@@ -14,6 +14,8 @@ func NewEntityContext(typ string) (_interface.IEntity, error) {
 		return newUser(), nil
 	case "action":
 		return newAction(), nil
+	case "sensors":
+		return newSensors(), nil
 	}
 	return nil, errors.New("data type not in models")
 }

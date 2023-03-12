@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"src/route"
 	"sync"
 )
 
@@ -33,7 +34,7 @@ func GetApplication() *App {
 
 func (app *App) Run() {
 	if app.r != nil {
-		//route.CustomerRoutes(app.r)
+		route.SenSorRoute(app.r)
 		err := app.r.Run("localhost:8080")
 		if err != nil {
 			panic("Can't run gin engine")

@@ -6,18 +6,18 @@ type Action struct {
 	StatusDesc string `json:"status_desc"`
 }
 
-func (a *Action) Get() {
-
+func (a *Action) Get() (interface{}, error) {
+	return nil, nil
 }
 
-func (a *Action) Delete() {
-
+func (a *Action) Delete() (interface{}, error) {
+	return nil, nil
 }
 
-func (a *Action) Update() {
-
+func (a *Action) Update() (interface{}, error) {
+	return nil, nil
 }
 
-func (a *Action) Insert() {
-
+func (a *Action) Insert() (interface{}, error) {
+	return nil, nil
 }
