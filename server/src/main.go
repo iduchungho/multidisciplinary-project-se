@@ -1,7 +1,7 @@
 /*
 main.go file
 Author: Ho Duc Hung
-Start api: cd /src -> make run or go run main.go app.o
+Start api: cd /src -> make run or go run main.go app.go
 */
 package main
 

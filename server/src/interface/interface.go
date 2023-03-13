@@ -5,4 +5,7 @@ type IEntity interface {
 	Delete() (interface{}, error)
 	Update() (interface{}, error)
 	Get() (interface{}, error)
+	GetType() string
+	AddTypeEntity(typ string) error
+	FindDocument() (interface{}, error)
 }

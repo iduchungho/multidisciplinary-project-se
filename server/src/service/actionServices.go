@@ -2,6 +2,6 @@ package service
 
 import md "src/model"
 
-func newAction() *md.Action {
-	return &md.Action{}
+func newAction() *md.Actions {
+	return &md.Actions{}
 }

@@ -7,4 +7,5 @@ import (
 
 func SenSorRoute(r *gin.Engine) {
 	r.GET("/api/sensor/temperature", controller.GetTemperature)
+	r.GET("/api/sensor/humidity", controller.GetHumidity)
 }

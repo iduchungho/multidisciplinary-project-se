@@ -6,18 +6,36 @@ type Action struct {
 	StatusDesc string `json:"status_desc"`
 }
 
-func (a *Action) Get() (interface{}, error) {
+type Actions struct {
+	Type    string   `json:"type"`
+	Payload []Action `json:"payload"`
+}
+
+func (a *Actions) Get() (interface{}, error) {
 	return nil, nil
 }
 
-func (a *Action) Delete() (interface{}, error) {
+func (a *Actions) AddTypeEntity(typ string) error {
+	a.Type = typ
+	return nil
+}
+
+func (a *Actions) Delete() (interface{}, error) {
 	return nil, nil
 }
 
-func (a *Action) Update() (interface{}, error) {
+func (a *Actions) Update() (interface{}, error) {
 	return nil, nil
 }
 
-func (a *Action) Insert() (interface{}, error) {
+func (a *Actions) Insert() (interface{}, error) {
+	return nil, nil
+}
+
+func (a *Actions) GetType() string {
+	return a.Type
+}
+
+func (a *Actions) FindDocument() (interface{}, error) {
 	return nil, nil
 }

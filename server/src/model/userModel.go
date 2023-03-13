@@ -9,18 +9,35 @@ type User struct {
 	Actions   []Action `json:"actions"`
 }
 
-func (u *User) Get() (interface{}, error) {
+type Users struct {
+	Type string `json:"type"`
+	Data []User `json:"data"`
+}
+
+func (u *Users) GetType() string {
+	return u.Type
+}
+
+func (u *Users) AddTypeEntity(typ string) error {
+	u.Type = typ
+	return nil
+}
+
+func (u *Users) Get() (interface{}, error) {
 	return nil, nil
 }
 
-func (u *User) Delete() (interface{}, error) {
+func (u *Users) Delete() (interface{}, error) {
 	return nil, nil
 }
 
-func (u *User) Update() (interface{}, error) {
+func (u *Users) Update() (interface{}, error) {
 	return nil, nil
 }
 
-func (u *User) Insert() (interface{}, error) {
+func (u *Users) Insert() (interface{}, error) {
+	return nil, nil
+}
+func (u *Users) FindDocument() (interface{}, error) {
 	return nil, nil
 }
