@@ -2,6 +2,6 @@ package service
 
 import md "src/model"
 
-func newUser() *md.Users {
-	return &md.Users{}
+func newUser() *md.User {
+	return &md.User{}
 }

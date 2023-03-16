@@ -7,7 +7,6 @@ import (
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"src/database"
@@ -36,7 +35,7 @@ func (s *Sensors) AddTypeEntity(typ string) error {
 	return nil
 }
 
-func (s *Sensors) Get() (interface{}, error) {
+func (s *Sensors) GetEntityFromDB(param string) (interface{}, error) {
 	errEnv := godotenv.Load()
 	if errEnv != nil {
 		return nil, errEnv
@@ -73,16 +72,16 @@ func (s *Sensors) Get() (interface{}, error) {
 	return &sensors.Payload, nil
 }
 
-func (s *Sensors) Delete() (interface{}, error) {
+func (s *Sensors) DeleteElement(param string) (interface{}, error) {
 	return nil, nil
 }
 
-func (s *Sensors) Update() (interface{}, error) {
+func (s *Sensors) UpdateData(msg string, payload interface{}, param string) (interface{}, error) {
 	return nil, nil
 }
 
-func (s *Sensors) Insert() (interface{}, error) {
-	instanceSensor, _ := s.FindDocument()
+func (s *Sensors) InsertData(payload interface{}) (interface{}, error) {
+	instanceSensor, _ := s.FindDocument("", "")
 	if instanceSensor != nil {
 		return nil, nil
 	}
@@ -91,11 +90,11 @@ func (s *Sensors) Insert() (interface{}, error) {
 
 	insertResult, err := collection.InsertOne(context.TODO(), s)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	return insertResult.InsertedID, nil
 }
-func (s *Sensors) FindDocument() (interface{}, error) {
+func (s *Sensors) FindDocument(key string, val string) (interface{}, error) {
 	typ := s.GetType()
 	filter := bson.D{{"type", typ}}
 
@@ -103,6 +102,7 @@ func (s *Sensors) FindDocument() (interface{}, error) {
 	collection := database.GetConnection().Database("SmartHomeDB").Collection("Sensors")
 
 	err := collection.FindOne(context.TODO(), filter).Decode(&res)
+
 	if err != nil {
 		return nil, err
 	}

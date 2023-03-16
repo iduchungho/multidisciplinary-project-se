@@ -11,7 +11,7 @@ type Actions struct {
 	Payload []Action `json:"payload"`
 }
 
-func (a *Actions) Get() (interface{}, error) {
+func (a *Actions) GetEntityFromDB(param string) (interface{}, error) {
 	return nil, nil
 }
 
@@ -20,15 +20,15 @@ func (a *Actions) AddTypeEntity(typ string) error {
 	return nil
 }
 
-func (a *Actions) Delete() (interface{}, error) {
+func (a *Actions) DeleteElement(param string) (interface{}, error) {
 	return nil, nil
 }
 
-func (a *Actions) Update() (interface{}, error) {
+func (a *Actions) UpdateData(msg string, payload interface{}, param string) (interface{}, error) {
 	return nil, nil
 }
 
-func (a *Actions) Insert() (interface{}, error) {
+func (a *Actions) InsertData(payload interface{}) (interface{}, error) {
 	return nil, nil
 }
 
@@ -36,6 +36,6 @@ func (a *Actions) GetType() string {
 	return a.Type
 }
 
-func (a *Actions) FindDocument() (interface{}, error) {
+func (a *Actions) FindDocument(key string, val string) (interface{}, error) {
 	return nil, nil
 }
