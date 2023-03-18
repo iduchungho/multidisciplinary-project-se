@@ -2,13 +2,13 @@ package service
 
 import (
 	"errors"
-	_interface "src/interface"
+	interfaces "src/interface"
 )
 
 // Factory method Design Pattern
 // param typ string.
 
-func NewEntityContext(typ string) (_interface.IEntity, error) {
+func NewEntityContext(typ string) (interfaces.IEntity, error) {
 	switch typ {
 	case "user":
 		return newUser(), nil
