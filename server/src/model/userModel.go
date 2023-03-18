@@ -9,39 +9,40 @@ import (
 
 type User struct {
 	Type      string   `json:"type"`
-	FirstName string   `json:"first_name"`
-	LastName  string   `json:"last_name"`
-	UserName  string   `json:"user_name"`
+	Id        string   `json:"id"`
+	FirstName string   `json:"firstname"`
+	LastName  string   `json:"lastname"`
+	UserName  string   `json:"username"`
 	Password  string   `json:"password"`
 	Avatar    string   `json:"avatar"`
 	Actions   []Action `json:"actions"`
 }
 
-func (u *User) GetType() string {
-	return u.Type
-}
-
-func (u *User) AddTypeEntity(typ string) error {
-	u.Type = typ
+func (u *User) SetElement(typ string, value interface{}) error {
+	switch typ {
+	case "type":
+		u.Type = value.(string)
+		return nil
+	}
 	return nil
 }
 
-func (u *User) GetEntityFromDB(param string) (interface{}, error) {
+func (u *User) GetEntity(param string) (interface{}, error) {
 	return nil, nil
 }
 
-func (u *User) DeleteElement(param string) (interface{}, error) {
-	return nil, nil
+func (u *User) DeleteEntity(param string) error {
+	return nil
 }
 
-func (u *User) UpdateData(msg string, payload interface{}, param string) (interface{}, error) {
-	return nil, nil
+func (u *User) UpdateData(msg string, payload interface{}, param string) error {
+	return nil
 }
 
-func (u *User) InsertData(payload interface{}) (interface{}, error) {
+func (u *User) InsertData(payload interface{}) error {
 	user, ok := payload.(User)
 	if !ok {
-		return nil, errors.New("InitField: Require a User")
+		return errors.New("InitField: Require a User")
 	}
 
 	u.Type = "user"
@@ -54,18 +55,19 @@ func (u *User) InsertData(payload interface{}) (interface{}, error) {
 
 	res, _ := u.FindDocument("username", u.UserName)
 	if res != nil {
-		return nil, errors.New("username already exist")
+		return errors.New("username already exist")
 	}
 
 	collection := database.GetConnection().Database("SmartHomeDB").Collection("Users")
 
-	insertRes, err := collection.InsertOne(context.TODO(), u)
+	_, err := collection.InsertOne(context.TODO(), u)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return insertRes.InsertedID, nil
+	return nil
 
 }
+
 func (u *User) FindDocument(key string, val string) (interface{}, error) {
 	filter := bson.D{{key, val}}
 
@@ -73,8 +75,33 @@ func (u *User) FindDocument(key string, val string) (interface{}, error) {
 	var res User
 	err := collection.FindOne(context.TODO(), filter).Decode(&res)
 
+	// no documents
 	if err != nil {
 		return nil, err
 	}
+
+	u.Type = res.Type
+	u.UserName = res.UserName
+	u.FirstName = res.FirstName
+	u.LastName = res.LastName
+	u.Avatar = res.Avatar
+	u.Password = res.Password
+	u.Actions = res.Actions
+
 	return res, nil
+}
+
+func (u *User) GetElement(msg string) (*string, error) {
+	switch msg {
+	case "type":
+		return &u.Type, nil
+	case "username":
+		return &u.UserName, nil
+	case "password":
+		return &u.Password, nil
+	case "id":
+		return &u.Id, nil
+	default:
+		return nil, errors.New("no element in user entity")
+	}
 }

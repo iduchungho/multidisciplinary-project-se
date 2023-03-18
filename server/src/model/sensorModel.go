@@ -27,22 +27,20 @@ type Sensors struct {
 	Payload []Sensor `json:"payload"`
 }
 
-func (s *Sensors) GetType() string {
-	return s.Type
-}
-func (s *Sensors) AddTypeEntity(typ string) error {
+func (s *Sensors) SetElement(typ string, value interface{}) error {
 	s.Type = typ
 	return nil
 }
 
-func (s *Sensors) GetEntityFromDB(param string) (interface{}, error) {
+func (s *Sensors) GetEntity(param string) (interface{}, error) {
 	errEnv := godotenv.Load()
 	if errEnv != nil {
 		return nil, errEnv
 	}
 
 	var api string
-	switch s.GetType() {
+	typ, _ := s.GetElement("type")
+	switch *typ {
 	case "temperature":
 		api = os.Getenv("API_TEMP")
 	case "humidity":
@@ -72,30 +70,30 @@ func (s *Sensors) GetEntityFromDB(param string) (interface{}, error) {
 	return &sensors.Payload, nil
 }
 
-func (s *Sensors) DeleteElement(param string) (interface{}, error) {
-	return nil, nil
+func (s *Sensors) DeleteEntity(param string) error {
+	return nil
 }
 
-func (s *Sensors) UpdateData(msg string, payload interface{}, param string) (interface{}, error) {
-	return nil, nil
+func (s *Sensors) UpdateData(msg string, payload interface{}, param string) error {
+	return nil
 }
 
-func (s *Sensors) InsertData(payload interface{}) (interface{}, error) {
+func (s *Sensors) InsertData(payload interface{}) error {
 	instanceSensor, _ := s.FindDocument("", "")
 	if instanceSensor != nil {
-		return nil, nil
+		return nil
 	}
 
 	collection := database.GetConnection().Database("SmartHomeDB").Collection("Sensors")
 
-	insertResult, err := collection.InsertOne(context.TODO(), s)
+	_, err := collection.InsertOne(context.TODO(), s)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return insertResult.InsertedID, nil
+	return nil
 }
 func (s *Sensors) FindDocument(key string, val string) (interface{}, error) {
-	typ := s.GetType()
+	typ, _ := s.GetElement("type")
 	filter := bson.D{{"type", typ}}
 
 	var res Sensors
@@ -107,4 +105,13 @@ func (s *Sensors) FindDocument(key string, val string) (interface{}, error) {
 		return nil, err
 	}
 	return res, nil
+}
+
+func (s *Sensors) GetElement(msg string) (*string, error) {
+	switch msg {
+	case "type":
+		return &s.Type, nil
+	default:
+		return nil, errors.New("no element in user entity")
+	}
 }
