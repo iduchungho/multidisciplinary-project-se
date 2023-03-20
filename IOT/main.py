@@ -2,10 +2,11 @@ import sys
 from Adafruit_IO import MQTTClient
 import time
 import random
+from faceAI import faceAI
 
 AIO_FEED_ID = ["btnled","btndoor","btnfan"]
 AIO_USERNAME = "smartHomeIOT1"
-AIO_KEY = "aio_tTiq09eRd7kbStgBoMbAGeQY7nDi"
+AIO_KEY = "aio_gXpW86VK1fUcrgj1b8p1sKlfqRLI"
 
 def connected(client):
     print("Ket noi thanh cong ...")
@@ -35,6 +36,9 @@ count=10
 while True:
     if(count<=0):
         print("Publish data to server Adafruit")
+        time.sleep(5)
+        print("Publish face AI")
+        client.publish("ai",faceAI())
         time.sleep(5)
         print("Publish temperature")
         client.publish("temperature",random.randint(0,100))
