@@ -2,8 +2,6 @@
 import Dashboard from "../pages/Dashboard";
 import Door from "../pages/Door";
 import LedFan from "../pages/LedFan";
-import Login from "../pages/Login/Login";
-import Register from "../pages/Register/Register";
 import TemperHumi from "../pages/TemperHumi";
 
 
@@ -28,16 +26,6 @@ const publicRoutes = [
         component: TemperHumi,
         layout: 0
     },
-    {
-        path: '/login',
-        component: Login,
-        layout: 0
-    },
-    {
-        path: '/register',
-        component: Register,
-        layout: 0
-    }
 
 ];
 const privateRoutes = [];

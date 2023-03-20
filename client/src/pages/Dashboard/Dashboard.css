@@ -350,6 +350,8 @@
 /* Thiết lập style cho công tắc khi btn-switch được checked */
 .btn-switch:checked + .slider {
     background-color: #2196F3;
+    background-color: #3e98c7,
+    
 }
 .btn-switch:checked ~ .btn-led{
     background-color: var(--primary2-color);

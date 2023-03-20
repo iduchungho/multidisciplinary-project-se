@@ -1,17 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
+import axios from "axios";
 import "./Dashboard.css";
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
 
 
+
+
 function Dashboard()
 {
+
     // công tắc đèn led
     const [ledBtn, setLed]=useState(0);
     const clickLed=()=>{
         setLed(!ledBtn);
     }
-
+    
     // công tắc đèn fan
     const [fanBtn, setFan]=useState(0);
     const clickFan=()=>{
@@ -24,6 +28,15 @@ function Dashboard()
         setDoor(!doorBtn);
     }
 
+    // face AI
+    const [face, setFace]=useState("");
+    if (face == "Bao\n" && doorBtn == 0)
+    {
+        setDoor(!doorBtn)
+    }
+
+    
+
     // list các image room 
 
     const listImage=["https://sbshouse.vn/wp-content/uploads/2021/06/bi%E1%BB%87t-th%E1%BB%B1-2-t%E1%BA%A7ng-%C4%91%E1%BA%B9p-4.jpg",
@@ -34,7 +47,88 @@ function Dashboard()
     
     const [img, setImg]=useState(0);
     
+    // lấy dữ liệu 
 
+    const [tempers,setTemper]= useState([]);
+    const [humis,setHumi]= useState([]);
+    useEffect(()=>{
+        setTimeout(()=>{
+            axios 
+            .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/humidity/data')
+            .then(response => setHumi(response.data))
+            .catch(error => console.error(error))
+            axios 
+            .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data')
+            .then(response => setTemper(response.data))
+            .catch(error => console.error(error))
+            axios 
+            .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/ai/data')
+            .then(response => setFace(response.data[0].value))
+            .catch(error => console.error(error))
+
+        },3000)
+
+    
+
+        
+    },[tempers]);
+
+    useEffect(()=>{
+       
+        var data = { value: 0 };  
+        if (ledBtn) data.value = 1;
+       
+        
+        fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnled/data", {
+        method: 'POST',
+        headers: {
+            'X-AIO-Key': "aio_gXpW86VK1fUcrgj1b8p1sKlfqRLI",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then(response => console.log(response.status))
+        .catch(error => console.error(error));
+    },[ledBtn])
+
+    useEffect(()=>{
+       
+        var data = { value: 0 };  
+        if (fanBtn) data.value = 1;
+       
+        
+        fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnfan/data", {
+        method: 'POST',
+        headers: {
+            'X-AIO-Key': "aio_gXpW86VK1fUcrgj1b8p1sKlfqRLI",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then(response => console.log(response.status))
+        .catch(error => console.error(error));
+    },[fanBtn])
+
+    useEffect(()=>{
+       
+        var data = { value: 0 };  
+        if (doorBtn) data.value = 1;
+       
+        
+        fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btndoor/data", {
+        method: 'POST',
+        headers: {
+            'X-AIO-Key': "aio_gXpW86VK1fUcrgj1b8p1sKlfqRLI",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then(response => console.log(response.status))
+        .catch(error => console.error(error));
+    },[doorBtn])
+  
+
+    
     return (
         <div className="dashBoard">
             <div className="dashBoard__left">
@@ -96,7 +190,7 @@ function Dashboard()
                                 <span className="fan-connect"> {!fanBtn ?"Not Connected":"Connected"}</span>
                             </div>
                             <label class="switch">
-                                <input className="btn-switch" type="checkbox" onClick={clickFan}/>
+                                <input className="btn-switch" type="checkbox" onClick={clickFan} />
                                 <span class="slider">
                                     <ul className="switch__select">
                                         <li className="switch__select-item">Off</li>
@@ -115,7 +209,7 @@ function Dashboard()
                                 <span className="door-connect"> {!doorBtn ?"Not Connected":"Connected"}</span>
                             </div>
                             <label class="switch">
-                                <input className="btn-switch" type="checkbox" onClick={clickDoor}/>
+                                <input className="btn-switch" type="checkbox" onClick={clickDoor} checked={doorBtn}/>
                                 <span class="slider">
                                     <ul className="switch__select">
                                         <li className="switch__select-item">Off</li>
@@ -131,12 +225,17 @@ function Dashboard()
             <div className="dashBoard__right">
                 <div className="dashBoard__right-temper">
                     <h3 className="temper__infor">It's hot</h3>
-                    <h3 className="temper__text"> 32°C</h3>
+                    <h3 className="temper__text"> {
+                    
+                    tempers.length>0 ? tempers[0].value : 0
+                    }°C</h3>
                     <img src={mountain} className="temper__scene"/>
                 </div>
                 <div className="dashBoard__right-humi">
                     <h3 className="temper__infor">High humidity</h3>
-                    <h3 className="temper__text"> 80%</h3>
+                    <h3 className="temper__text"> {
+                        humis.length>0 ? humis[0].value : 0
+                    }%</h3>
                     <img src={water} className="temper__scene"/>
                 </div>
                

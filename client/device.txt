@@ -1,8 +1,17 @@
 Bật tắt đèn, quạt trong nhà : đèn leb , quạt , sensor hồng ngoại, cảm biến ánh sáng , cam lab (AI).
+(2 công tắc, 1 ô AI, 1 ô cảm biến ánh sáng, 1 ô speed fan)
 
 Điều chỉnh nhiệt độ, đổ ẩm : sesnor DHT20 , LCD để thông báo
 
+(2 ô cảm biến nhiệt độ và độ ẩm, 2 ô lịch sử)
+
 Tự động mở cửa : sensor khoảng cách, LCD, LED RGB, động cơ servo
+
+(1 ô công tắc)
+
+1 ô xem lịch sử thao tác 
+
+=> thiết kế cho adafruit là 10 ô  
 
 
 
