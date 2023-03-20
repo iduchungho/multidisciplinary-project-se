@@ -31,12 +31,12 @@ const publicRoutes = [
     {
         path: '/login',
         component: Login,
-        layout: 0
+        layout: 1
     },
     {
         path: '/register',
         component: Register,
-        layout: 0
+        layout: 1
     }
 
 ];
