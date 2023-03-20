@@ -1,16 +1,12 @@
-import { useState, useEffect } from "react";
-import "./Register.css";
-
-
-
-function Register() {
+import './Login.css'
+function Login() {
     return (
-        <div class='register'>
+        <div class='login'>
             <section>
                 <div class="form-box">
                     <div class="form-value">
                         <form action="">
-                            <h2>Sign up</h2>
+                            <h2>Login</h2>
                             <div class="inputbox">
                                 <ion-icon name="mail-outline"></ion-icon>
                                 <input type="email" required />
@@ -21,14 +17,8 @@ function Register() {
                                 <input type="password" required />
                                 <label for="">Password</label>
                             </div>
-                            <div class="inputbox">
-                                <ion-icon name="lock-closed-outline"></ion-icon>
-                                <input type="password_again" required />
-                                <label for="">Password Again</label>
-                            </div>
                             <div class="forget">
-                                <label for=""><input type="checkbox" />Remember Me <a
-                                    href="#">Forget Password</a></label>
+                                <label for=""><input type="checkbox" />Remember Me  <a href="#">Forget Password</a></label>
 
                             </div>
                             <button>Log in</button>
@@ -39,12 +29,9 @@ function Register() {
                     </div>
                 </div>
             </section>
-            <script type="module"
-                src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-            <script nomodule
-                src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+            <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         </div>
     )
 }
-
-export default Register;
+export default Login;
