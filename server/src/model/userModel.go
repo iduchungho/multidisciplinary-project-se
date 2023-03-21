@@ -46,6 +46,7 @@ func (u *User) InsertData(payload interface{}) error {
 	}
 
 	u.Type = "user"
+	u.Id = user.Id
 	u.UserName = user.UserName
 	u.FirstName = user.FirstName
 	u.LastName = user.LastName
@@ -81,6 +82,7 @@ func (u *User) FindDocument(key string, val string) (interface{}, error) {
 	}
 
 	u.Type = res.Type
+	u.Id = res.Id
 	u.UserName = res.UserName
 	u.FirstName = res.FirstName
 	u.LastName = res.LastName
@@ -101,6 +103,12 @@ func (u *User) GetElement(msg string) (*string, error) {
 		return &u.Password, nil
 	case "id":
 		return &u.Id, nil
+	case "firstname":
+		return &u.FirstName, nil
+	case "lastname":
+		return &u.LastName, nil
+	case "avatar":
+		return &u.Avatar, nil
 	default:
 		return nil, errors.New("no element in user entity")
 	}
