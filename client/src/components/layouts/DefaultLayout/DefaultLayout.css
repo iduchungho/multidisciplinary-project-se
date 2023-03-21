@@ -87,7 +87,11 @@
     color: white;
     font-size: 20px;
 }
-
+.notification-icon
+{
+    color: white;
+    font-size: 20px;
+}
 .active
 {
     background-color: #6c29fb;
@@ -179,6 +183,19 @@
 
     font-size: 17px;
     color: var(--primary4-color);
+}
+.notification__container 
+{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    max-height: 30px;
+    border-radius: 5px;
+}
+.notification__container:hover
+{
+    background-color: #6c29fb;
 }
 
 /* CONTENT */

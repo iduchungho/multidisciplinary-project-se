@@ -5,7 +5,7 @@ import LedFan from "../pages/LedFan";
 import TemperHumi from "../pages/TemperHumi";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-
+import Notification from "../pages/Notification";
 const publicRoutes = [
     {
         path: '/',
@@ -36,6 +36,11 @@ const publicRoutes = [
         path: '/register',
         component: Register,
         layout: 1
+    },
+    {
+        path: '/notification',
+        component: Notification,
+        layout: 0
     }
 
 ];

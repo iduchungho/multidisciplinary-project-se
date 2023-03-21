@@ -4,14 +4,17 @@ import "../../base.css";
 import sun from "../../../assets/sun.png";
 import cloudy from "../../../assets/cloudy.png";
 import night from "../../../assets/night.png";
-
+import { useNavigate } from "react-router-dom";
 function DefaultLayout({children})
 {
     var date = new Date();
     var hour=date.getHours();
     var day="",num=date.getDay();
     var weather;
-
+    const navigate = useNavigate()
+    function notification() {
+      navigate('/notification')
+    }
     if (hour >=6 && hour <= 12 ) weather=sun;
     else if  (hour >12 && hour < 18  ) weather=cloudy;
     else weather=night;
@@ -125,6 +128,9 @@ function DefaultLayout({children})
                                 <div className="header__time-greeting">
                                     <span className="greeting1">Good morning, Bao</span>
                                     <span className="greeting2">Have a nice day</span>
+                                </div>
+                                <div className="notification__container" onClick={notification}>
+                                  <i class="notification-icon fa-solid fa-bell"></i>
                                 </div>
                                 <div className="header__time-weather">
                                     <img src={weather} className="weather-icon"/>
