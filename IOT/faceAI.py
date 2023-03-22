@@ -48,7 +48,3 @@ def faceAI():
     camera.release()
     cv2.destroyAllWindows()
     return class_name[2:]
-    
-
-   
-
