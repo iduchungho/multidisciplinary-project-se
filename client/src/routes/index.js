@@ -6,6 +6,7 @@ import TemperHumi from "../pages/TemperHumi";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Notification from "../pages/Notification";
+import Light from "../pages/Light";
 const publicRoutes = [
     {
         path: '/',
@@ -40,6 +41,11 @@ const publicRoutes = [
     {
         path: '/notification',
         component: Notification,
+        layout: 0
+    },
+    {
+        path: '/light',
+        component: Light,
         layout: 0
     }
 
