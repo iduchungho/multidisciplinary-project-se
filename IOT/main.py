@@ -6,7 +6,8 @@ from faceAI import faceAI
 
 AIO_FEED_ID = ["btnled","btndoor","btnfan"]
 AIO_USERNAME = "smartHomeIOT1"
-AIO_KEY = "aio_gXpW86VK1fUcrgj1b8p1sKlfqRLI"
+AIO_KEY = "aio_UXzI410lBYXfYeBWzI9nDESBtdva"
+
 
 def connected(client):
     print("Ket noi thanh cong ...")
