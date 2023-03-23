@@ -35,7 +35,7 @@ func (u *User) DeleteEntity(param string) error {
 	return nil
 }
 
-func (u *User) UpdateData(msg string, payload interface{}, param string) error {
+func (u *User) UpdateData(payload interface{}) error {
 	return nil
 }
 

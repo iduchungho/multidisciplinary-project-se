@@ -17,7 +17,7 @@ func GetTemperature(c *gin.Context) {
 	err = nSensors.SetElement("type", "temperature")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
+			"error": err.Error(),
 		})
 		return
 	}
@@ -25,7 +25,7 @@ func GetTemperature(c *gin.Context) {
 	res, errSen := nSensors.GetEntity("")
 	if errSen != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": errSen,
+			"error": errSen.Error(),
 		})
 		return
 	}
@@ -33,7 +33,7 @@ func GetTemperature(c *gin.Context) {
 	errIs := nSensors.InsertData(res)
 	if errIs != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": errIs,
+			"error": errIs.Error(),
 		})
 		return
 	}
@@ -54,7 +54,7 @@ func GetHumidity(c *gin.Context) {
 	err = nSensors.SetElement("type", "humidity")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
+			"error": err.Error(),
 		})
 		return
 	}
@@ -62,7 +62,7 @@ func GetHumidity(c *gin.Context) {
 	res, errSen := nSensors.GetEntity("")
 	if errSen != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": errSen,
+			"error": errSen.Error(),
 		})
 		return
 	}
@@ -70,7 +70,7 @@ func GetHumidity(c *gin.Context) {
 	errIs := nSensors.InsertData(res)
 	if errIs != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": errIs,
+			"error": errIs.Error(),
 		})
 		return
 	}

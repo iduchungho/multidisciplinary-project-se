@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"io"
@@ -28,7 +29,11 @@ type Sensors struct {
 }
 
 func (s *Sensors) SetElement(typ string, value interface{}) error {
-	s.Type = typ
+	switch typ {
+	case "type":
+		s.Type = value.(string)
+		return nil
+	}
 	return nil
 }
 
@@ -46,7 +51,7 @@ func (s *Sensors) GetEntity(param string) (interface{}, error) {
 	case "humidity":
 		api = os.Getenv("API_HUMID")
 	default:
-		return nil, errors.New("no type in entity")
+		return nil, errors.New(fmt.Sprintf("no type in entity:%s", *typ))
 	}
 	resp, err := http.Get(api)
 	if err != nil {
@@ -67,20 +72,40 @@ func (s *Sensors) GetEntity(param string) (interface{}, error) {
 
 	s.Payload = sensors.Payload
 	s.Type = sensors.Payload[0].FeedKey
-	return &sensors.Payload, nil
+	return sensors, nil
 }
 
 func (s *Sensors) DeleteEntity(param string) error {
 	return nil
 }
 
-func (s *Sensors) UpdateData(msg string, payload interface{}, param string) error {
+func (s *Sensors) UpdateData(payload interface{}) error {
+	sensor, ok := payload.(Sensors)
+	if !ok {
+		return errors.New("InitField: Require a Sensors")
+	}
+	filter := bson.D{{"type", s.Type}}
+	update := bson.D{{"$set", bson.D{{"payload", sensor.Payload}}}}
+	collection := database.GetConnection().Database("SmartHomeDB").Collection("Sensors")
+	_, err := collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (s *Sensors) InsertData(payload interface{}) error {
-	instanceSensor, _ := s.FindDocument("", "")
+	typ, _ := s.GetElement("type")
+	instanceSensor, _ := s.FindDocument("type", *typ)
 	if instanceSensor != nil {
+		sensors, ok := payload.(Sensors)
+		if !ok {
+			return errors.New("InitField: Require a Sensors")
+		}
+		err := s.UpdateData(sensors)
+		if err != nil {
+			return err
+		}
 		return nil
 	}
 
@@ -93,8 +118,8 @@ func (s *Sensors) InsertData(payload interface{}) error {
 	return nil
 }
 func (s *Sensors) FindDocument(key string, val string) (interface{}, error) {
-	typ, _ := s.GetElement("type")
-	filter := bson.D{{"type", typ}}
+
+	filter := bson.D{{key, val}}
 
 	var res Sensors
 	collection := database.GetConnection().Database("SmartHomeDB").Collection("Sensors")
