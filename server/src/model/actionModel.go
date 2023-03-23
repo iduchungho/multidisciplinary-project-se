@@ -19,7 +19,7 @@ func (a *Actions) GetEntity(param string) (interface{}, error) {
 	return nil, nil
 }
 
-func (a *Actions) UpdateData(msg string, payload interface{}, param string) error {
+func (a *Actions) UpdateData(payload interface{}) error {
 	return nil
 }
 
