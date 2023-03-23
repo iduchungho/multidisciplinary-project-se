@@ -2,8 +2,8 @@ package application
 
 import (
 	"os"
-	"smhome/route"
-	"smhome/utils"
+	"smhome/pkg/route"
+	"smhome/pkg/utils"
 	"sync"
 
 	"github.com/gin-gonic/gin"
