@@ -1,6 +1,6 @@
 package service
 
-import md "src/model"
+import md "smhome/model"
 
 func newUser() *md.User {
 	return &md.User{}

@@ -5,12 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"io"
 	"net/http"
 	"os"
-	"src/database"
+	"smhome/database"
 )
 
 type Sensor struct {
@@ -38,10 +37,10 @@ func (s *Sensors) SetElement(typ string, value interface{}) error {
 }
 
 func (s *Sensors) GetEntity(param string) (interface{}, error) {
-	errEnv := godotenv.Load()
-	if errEnv != nil {
-		return nil, errEnv
-	}
+	// errEnv := godotenv.Load()
+	// if errEnv != nil {
+	// 	return nil, errEnv
+	// }
 
 	var api string
 	typ, _ := s.GetElement("type")

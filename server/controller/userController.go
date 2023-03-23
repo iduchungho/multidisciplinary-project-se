@@ -1,12 +1,13 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
-	"src/model"
-	"src/service"
-	"src/utils"
+	"smhome/model"
+	"smhome/service"
+	"smhome/utils"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Login(c *gin.Context) {
@@ -58,7 +59,7 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"token": tokenString,
 	})
-	return
+
 }
 
 func AddNewUser(c *gin.Context) {
@@ -106,7 +107,7 @@ func AddNewUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": userMd,
 	})
-	return
+
 }
 
 func Logout(c *gin.Context) {
@@ -115,5 +116,11 @@ func Logout(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"data":    "your session has been wiped",
+	})
+}
+
+func Public(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": os.Getenv("DB_NAME"),
 	})
 }

@@ -2,7 +2,7 @@ package route
 
 import (
 	"github.com/gin-gonic/gin"
-	"src/controller"
+	"smhome/controller"
 )
 
 func SenSorRoute(r *gin.Engine) {

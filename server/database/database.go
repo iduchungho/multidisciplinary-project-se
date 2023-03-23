@@ -3,7 +3,6 @@ package database
 import (
 	"context"
 	"fmt"
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
@@ -16,10 +15,10 @@ var connect *mongo.Client
 var lock = &sync.Mutex{}
 
 func getURI() string {
-	err := godotenv.Load()
-	if err != nil {
-		panic("Failed to load .env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	panic("Failed to load .env file")
+	// }
 
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
