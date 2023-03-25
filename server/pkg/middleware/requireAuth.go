@@ -3,26 +3,35 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
-	"net/http"
-	"os"
-	"smhome/database"
-	"smhome/app/model"
-	"time"
-
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
+	"go.mongodb.org/mongo-driver/bson"
+	"os"
+	"smhome/app/models"
+	"smhome/platform/cache"
+	"smhome/platform/database"
+	"time"
 )
 
-func RequireUser(c *gin.Context) {
+func RequireUser(c *fiber.Ctx) error {
 	// Get the cookie off req
-	tokenString, err := c.Cookie("Authorization")
-
+	sess, err := cache.GetSessionStore().Get(c)
 	if err != nil {
-		c.AbortWithStatus(http.StatusUnauthorized)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	tkStr := sess.Get("Authorization")
+	if tkStr == nil || tkStr == -1 {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"data":    "no token in session",
+			"success": false,
+		})
 	}
 
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+	tokenString := tkStr.(string)
+
+	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
@@ -35,8 +44,7 @@ func RequireUser(c *gin.Context) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		// check the exp
 		if float64(time.Now().Unix()) > claims["exp"].(float64) {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
+			return c.SendStatus(fiber.StatusUnauthorized)
 		}
 		// find the user with token sub
 		filter := bson.D{{"id", claims["sub"]}}
@@ -46,16 +54,21 @@ func RequireUser(c *gin.Context) {
 		errFind := collection.FindOne(context.TODO(), filter).Decode(&user)
 
 		if errFind != nil {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
+			// c.AbortWithStatus(http.StatusUnauthorized)
+			return c.SendStatus(fiber.StatusUnauthorized)
 		}
 		// attach to req
-		c.Set("user", user)
+		// cookie := new(fiber.Cookie)
+		// cookie.Name = "john"
+		// cookie.Value =
+		// cookie.Expires = time.Now().Add(24 * time.Hour)
+		// c.Cookie("user", user)
 
 		// continue
-		c.Next()
-	} else {
-		c.AbortWithStatus(http.StatusUnauthorized)
-		return
+		errNext := c.Next()
+		if errNext != nil {
+			return errNext
+		}
 	}
+	return c.SendStatus(fiber.StatusOK)
 }

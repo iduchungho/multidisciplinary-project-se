@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
 	"io"
 	"net/http"
 	"os"
-	"smhome/database"
+	"smhome/platform/database"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type Sensor struct {
@@ -71,6 +72,7 @@ func (s *Sensors) GetEntity(param string) (interface{}, error) {
 
 	s.Payload = sensors.Payload
 	s.Type = sensors.Payload[0].FeedKey
+	sensors.Type = *typ
 	return sensors, nil
 }
 
@@ -95,12 +97,13 @@ func (s *Sensors) UpdateData(payload interface{}) error {
 
 func (s *Sensors) InsertData(payload interface{}) error {
 	typ, _ := s.GetElement("type")
+	sensors, ok := payload.(Sensors)
+	if !ok {
+		return errors.New("InitField: Require a Sensors")
+	}
+	sensors.Type = *typ
 	instanceSensor, _ := s.FindDocument("type", *typ)
 	if instanceSensor != nil {
-		sensors, ok := payload.(Sensors)
-		if !ok {
-			return errors.New("InitField: Require a Sensors")
-		}
 		err := s.UpdateData(sensors)
 		if err != nil {
 			return err

@@ -1,82 +1,73 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
-	"smhome/pkg/service"
+	"smhome/pkg/services"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func GetTemperature(c *gin.Context) {
+func GetTemperature(c *fiber.Ctx) error {
 	nSensors, err := service.NewEntityContext("sensors")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "can't create sensors models",
 		})
-		return
 	}
 	err = nSensors.SetElement("type", "temperature")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
-		return
 	}
 
 	res, errSen := nSensors.GetEntity("")
 	if errSen != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": errSen.Error(),
 		})
-		return
 	}
 
 	errIs := nSensors.InsertData(res)
 	if errIs != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": errIs.Error(),
 		})
-		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"data": res,
 	})
 }
 
-func GetHumidity(c *gin.Context) {
+func GetHumidity(c *fiber.Ctx) error {
 	nSensors, err := service.NewEntityContext("sensors")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "can't create sensors models",
 		})
-		return
 	}
 	err = nSensors.SetElement("type", "humidity")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
-		return
 	}
 
 	res, errSen := nSensors.GetEntity("")
 	if errSen != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": errSen.Error(),
 		})
-		return
 	}
 
 	errIs := nSensors.InsertData(res)
 	if errIs != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": errIs.Error(),
 		})
-		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"data": res,
 	})
-	return
 }
