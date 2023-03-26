@@ -19,10 +19,10 @@ function Light() {
                 .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/light/data')
                 .then(response => setLight(response.data))
                 .catch(error => console.error(error))
-        }, 10000)
+        }, 3000)
 
     }, [lights]);
-    var clockLight = lights.length == 0 ? 0 : lights[0].value;
+    var clockLight = lights.length == 0 ? 0 : lights[0].value;  
     var colorLight = "rgb(236, 241, 50)";
 
     // xử lý dữ liệu đồ thị
