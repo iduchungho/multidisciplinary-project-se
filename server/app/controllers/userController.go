@@ -9,7 +9,7 @@ import (
 	"smhome/pkg/services"
 	"smhome/pkg/utils"
 	"smhome/platform/cache"
-	"smhome/platform/cloudinary"
+	cloud "smhome/platform/cloudinary"
 )
 
 func Login(c *fiber.Ctx) error {
@@ -110,29 +110,6 @@ func AddNewUser(c *fiber.Ctx) error {
 		})
 	}
 
-	// get file header
-	fileHeader, errFile := c.FormFile("avatar")
-	if errFile != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": errFile.Error(),
-		})
-	}
-	// open header file-header
-	file, errOpen := fileHeader.Open()
-	if errOpen != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": errOpen.Error(),
-		})
-	}
-	cld := cloud.GetConnCloudinary()
-	resp, errCld := cloud.UpdateImages(cld, file)
-	if errCld != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": errCld.Error(),
-		})
-	}
-	userMd.Avatar = resp.SecureURL
-
 	userMd.Password = string(hashPass)
 	if errIs := newUser.InsertData(userMd); errIs != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -167,5 +144,67 @@ func Logout(c *fiber.Ctx) error {
 }
 
 func ChangeAvatar(c *fiber.Ctx) error {
-	return nil
+	var avtar struct {
+		Avt string `json:"avt" form:"avt"`
+	}
+
+	if c.BodyParser(&avtar) != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to parse body",
+		})
+	}
+
+	username := c.Params("id")
+	user, err := service.NewEntityContext("user")
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	// get file header
+	fileHeader, errFile := c.FormFile("avt")
+	if errFile != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": errFile.Error(),
+		})
+	}
+	// open header file-header
+	file, errOpen := fileHeader.Open()
+	if errOpen != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": errOpen.Error(),
+		})
+	}
+	cld := cloud.GetConnCloudinary()
+	resp, errCld := cloud.UpdateImages(cld, file)
+	if errCld != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": errCld.Error(),
+		})
+	}
+
+	_, errFind := user.FindDocument("username", username)
+	if errFind != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": errFind.Error(),
+		})
+	}
+
+	err = user.UpdateData("avatar", resp.SecureURL)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	if err = user.SetElement("avatar", resp.SecureURL); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"success": true,
+		"data":    user,
+	})
 }

@@ -1,7 +1,7 @@
 // backend for smart home projects
 // author:
 //
-//	@yesic4n
+//	@k4ioshin
 //	@lamdienchinh
 //	@Nguyenleminhbao-tt5
 //
@@ -22,7 +22,7 @@ import (
 // @version 1.0
 // @description: main function where every beginning.
 // @BasePath /api
-// @yesic4n GitHub
+// @k4ioshin GitHub
 // @name Authorization
 func main() {
 	////////////////////////////////
