@@ -49,8 +49,8 @@
     pointer-events: none;
     transition: .5s;
 }
-input:focus ~ label,
-input:valid ~ label{
+.login input:focus ~ label,
+.login input:valid ~ label{
 top: -5px;
 }
 .inputbox input {
@@ -63,27 +63,7 @@ top: -5px;
     padding:0 35px 0 5px;
     color: #fff;
 }
-
-.forget{
-    margin: -15px 0 15px ;
-    font-size: .9em;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;  
-}
-
-.forget label input{
-    margin-right: 3px;
-
-}
-.forget label a{
-    color: #fff;
-    text-decoration: none;
-}
-.forget label a:hover{
-    text-decoration: underline;
-}
-.login{
+.login-btn{
     width: 100%;
     height: 40px;
     border-radius: 40px;
@@ -94,17 +74,17 @@ top: -5px;
     font-size: 1em;
     font-weight: 600;
 }
-.register{
+.register-block{
     font-size: .9em;
     color: #fff;
     text-align: center;
     margin: 25px 0 10px;
 }
-.register p a{
+.register-block p a{
     text-decoration: none;
     color: #fff;
     font-weight: 600;
 }
-.register p a:hover{
+.register-block p a:hover{
     text-decoration: underline;
 }
