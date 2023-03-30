@@ -1,5 +1,5 @@
 import './Login.css'
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 function Login() {
@@ -24,10 +24,12 @@ function Login() {
             }
             sessionStorage.setItem('user', JSON.stringify(user));
             console.log(JSON.parse(sessionStorage.getItem('user')));
+            navigate('/');
           } catch (error) {
             console.error(error);
+            alert('Đăng nhập thất bại')
+            navigate('/login');
           }
-          navigate('/');
       };
     return (
         <div className='login'>
@@ -44,19 +46,14 @@ function Login() {
                                 <input type="password" onChange={(event) => setPassword(event.target.value)}/>
                                 <label>Password</label>
                             </div>
-                            <div className="forget">
-                                <label><input type="checkbox" />Remember Me  <a href="#">Forget Password</a></label>
-                            </div>
-                            <button type="submit" className='login'>Log in</button>
-                            <div className="register">
+                            <button type="submit" className='login-btn'>Log in</button>
+                            <div className="register-block">
                                 <p>Don't have an account <a href="/register">Register</a></p>
                             </div>
                         </form>
                     </div>
                 </div>
             </section>
-            <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-            <script noModule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import "./Register.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 async function localFileToObject(filePath) {
@@ -53,50 +53,44 @@ function Register() {
             navigate('/login');
         } catch (error) {
             console.error(error);
+            alert('Đăng ký tài khoản thất bại');
+            navigate('/register')
         }
     };
     return (
-        <div class='register'>
+        <div className='register'>
             <section>
-                <div class="form-box">
-                    <div class="form-value">
+                <div className="form-box">
+                    <div className="form-value">
                         <form onSubmit={handleSubmit}>
                             <h2>Sign up</h2>
                             <div className="box-name">
-                                <div class="inputbox">
+                                <div className="inputbox">
                                     <input type="text" onChange={(event) => setFirstname(event.target.value)} />
                                     <label >First Name</label>
                                 </div>
-                                <div class="inputbox">
+                                <div className="inputbox">
                                     <input type="text" onChange={(event) => setLastname(event.target.value)} />
                                     <label >Lastname</label>
                                 </div>
                             </div>
-                            <div class="inputbox">
+                            <div className="inputbox">
                                 <input type="text" onChange={(event) => setPhonenumber(event.target.value)} />
                                 <label>Phonenumber</label>
                             </div>
-                            <div class="inputbox">
+                            <div className="inputbox">
                                 <input type="text" onChange={(event) => setUsername(event.target.value)} />
                                 <label>Username</label>
                             </div>
-                            <div class="inputbox">
+                            <div className="inputbox">
                                 <input type="password" onChange={(event) => setPassword(event.target.value)} />
                                 <label >Password</label>
-                            </div>
-                            <div class="forget">
-                                <label for=""><input type="checkbox" />Remember Me <a
-                                    href="#">Forget Password</a></label>
                             </div>
                             <button className="sign-up">Sign up</button>
                         </form>
                     </div>
                 </div>
             </section>
-            <script type="module"
-                src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-            <script noModule
-                src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         </div>
     )
 }

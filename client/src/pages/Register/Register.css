@@ -14,7 +14,7 @@
     background-position: center;
     background-size: cover;
 }
-.form-box{
+.register .form-box{
     position: relative;
     width: 40%;
     height: 90%;
@@ -27,23 +27,23 @@
     align-items: center;
 
 }
-.form-value {
+.register .form-value {
     width: 90%;
-    padding-right: 50px;
+    padding-right: 20px;
 }
-.form-value h2{
+.register .form-value h2{
     font-size: 2em;
     color: #fff;
     text-align: center;
     margin-top: 10px;
 }
-.inputbox{
+.register .inputbox{
     position: relative;
     margin: 30px;
     width: 100%;    
     border-bottom: 2px solid #fff;
 }
-.inputbox label{
+.register .inputbox label{
     position: absolute;
     top: 50%;
     left: 5px;
@@ -53,11 +53,11 @@
     pointer-events: none;
     transition: .5s;
 }
-input:focus ~ label,
-input:valid ~ label{
+.register input:focus ~ label,
+.register input:valid ~ label{
 top: -5px;
 }
-.inputbox input {
+.register .inputbox input {
     width: 100%;
     height: 50px;
     background: transparent;
@@ -67,29 +67,10 @@ top: -5px;
     padding:0 35px 0 5px;
     color: #fff;
 }
-
-.forget{
-    margin: 5px 0 15px 20px ;
-    font-size: .9em;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;  
-}
-
-.forget label input{
-    margin-right: 3px;
-
-}
-.forget label a{
-    color: #fff;
-    text-decoration: none;
-}
-.forget label a:hover{
-    text-decoration: underline;
-}
 .sign-up{
-    width: 20%;
+    width: 30%;
     height: 40px;
+    margin-left: 20px;
     border-radius: 40px;
     background: #fff;
     border: none;
@@ -98,20 +79,7 @@ top: -5px;
     font-size: 1em;
     font-weight: 600;
     margin-bottom: 20px;
-}
-.register{
-    font-size: .9em;
-    color: #fff;
-    text-align: center;
-    margin: 25px 0 10px;
-}
-.register p a{
-    text-decoration: none;
-    color: #fff;
-    font-weight: 600;
-}
-.register p a:hover{
-    text-decoration: underline;
+    
 }
 .box-name {
     display: flex;
