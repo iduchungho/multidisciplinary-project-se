@@ -48,7 +48,6 @@ const publicRoutes = [
         component: Light,
         layout: 0
     }
-
 ];
 const privateRoutes = [];
 

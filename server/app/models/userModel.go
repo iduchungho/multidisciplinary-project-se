@@ -22,6 +22,9 @@ func (u *User) SetElement(typ string, value interface{}) error {
 	case "type":
 		u.Type = value.(string)
 		return nil
+	case "avatar":
+		u.Avatar = value.(string)
+		return nil
 	}
 	return nil
 }
@@ -34,7 +37,14 @@ func (u *User) DeleteEntity(param string) error {
 	return nil
 }
 
-func (u *User) UpdateData(payload interface{}) error {
+func (u *User) UpdateData(key string, payload interface{}) error {
+	filter := bson.D{{"username", u.UserName}}
+	update := bson.D{{"$set", bson.D{{key, payload}}}}
+	collection := database.GetConnection().Database("SmartHomeDB").Collection("Users")
+	_, err := collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
