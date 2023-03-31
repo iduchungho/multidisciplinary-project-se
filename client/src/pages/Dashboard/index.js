@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react";
 import axios from "axios";
-import "./Dashboard.css";
+
+import "./Dashboard.scss";
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
 
@@ -66,6 +67,9 @@ function Dashboard()
             .then(response => setFace(response.data[0].value))
             .catch(error => console.error(error))
 
+
+            
+
         },3000)
 
     
@@ -82,7 +86,7 @@ function Dashboard()
         fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnled/data", {
         method: 'POST',
         headers: {
-            'X-AIO-Key': "aio_gXpW86VK1fUcrgj1b8p1sKlfqRLI",
+            'X-AIO-Key': "aio_afrI19lBaFZkGhrZ88NekM0PICgj",
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -100,7 +104,7 @@ function Dashboard()
         fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnfan/data", {
         method: 'POST',
         headers: {
-            'X-AIO-Key': "aio_gXpW86VK1fUcrgj1b8p1sKlfqRLI",
+            'X-AIO-Key': "aio_afrI19lBaFZkGhrZ88NekM0PICgj",
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -118,7 +122,7 @@ function Dashboard()
         fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btndoor/data", {
         method: 'POST',
         headers: {
-            'X-AIO-Key': "aio_gXpW86VK1fUcrgj1b8p1sKlfqRLI",
+            'X-AIO-Key': "aio_afrI19lBaFZkGhrZ88NekM0PICgj",
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -126,6 +130,11 @@ function Dashboard()
         .then(response => console.log(response.status))
         .catch(error => console.error(error));
     },[doorBtn])
+
+
+
+
+
   
 
     
@@ -162,7 +171,11 @@ function Dashboard()
                         </div>
                     </div>
                     <div className="content__btn">
-                        <button className="btn-led" style={{ backgroundColor: ledBtn && '#1babfc' }} >
+                        <button className="btn-led btn" style={{ backgroundColor: ledBtn && '#1babfc' }} >
+                            <span className='span1'></span>
+                            <span className='span2'></span>
+                            <span className='span3'></span>
+                            <span className='span4'></span>
                             <div className="led-border">
                                 <i className="led-btn-icon fa-solid fa-lightbulb"></i>
                             </div>
@@ -181,7 +194,11 @@ function Dashboard()
                             </label>
                         </button>
 
-                        <button className="btn-fan" style={{ backgroundColor: fanBtn && '#1babfc' }} >
+                        <button className="btn-fan btn" style={{ backgroundColor: fanBtn && '#1babfc' }} >
+                            <span className='span1'></span>
+                            <span className='span2'></span>
+                            <span className='span3'></span>
+                            <span className='span4'></span>
                             <div className="fan-border">
                                 <i className="fan-btn-icon fa-solid fa-fan"></i>
                             </div>
@@ -200,7 +217,11 @@ function Dashboard()
                             </label>
                         </button>
 
-                        <button className="btn-door" style={{ backgroundColor: doorBtn && '#1babfc' }} >
+                        <button className="btn-door btn" style={{ backgroundColor: doorBtn && '#1babfc' }} >
+                            <span className='span1'></span>
+                            <span className='span2'></span>
+                            <span className='span3'></span>
+                            <span className='span4'></span>
                             <div className="door-border">
                                 <i className="door-btn-icon fa-solid fa-door-closed"></i>
                             </div>
@@ -238,6 +259,10 @@ function Dashboard()
                     }%</h3>
                     <img src={water} className="temper__scene"/>
                 </div>
+
+
+
+             
                
             </div>
         </div>
