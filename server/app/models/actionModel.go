@@ -11,7 +11,7 @@ type Actions struct {
 	Payload []Action `json:"payload"`
 }
 
-func (a *Actions) DeleteEntity(param string) error {
+func (a *Actions) DeleteEntity(key string, value string) error {
 	return nil
 }
 
