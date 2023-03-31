@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 	"smhome/platform/database"
 )
 
@@ -30,10 +32,38 @@ func (u *User) SetElement(typ string, value interface{}) error {
 }
 
 func (u *User) GetEntity(param string) (interface{}, error) {
-	return nil, nil
+	findOption := options.Find()
+	collection := database.GetConnection().Database("SmartHomeDB").Collection("Users")
+	var users []*User
+	cursor, err := collection.Find(context.TODO(), bson.D{{}}, findOption)
+	if err != nil {
+		return nil, err
+	}
+	for cursor.Next(context.TODO()) {
+		var elem User
+		err = cursor.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+		}
+		users = append(users, &elem)
+	}
+	if err = cursor.Err(); err != nil {
+		return nil, err
+	}
+	err = cursor.Close(context.TODO())
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }
 
-func (u *User) DeleteEntity(param string) error {
+func (u *User) DeleteEntity(key string, value string) error {
+	filter := bson.D{{key, value}}
+	collection := database.GetCollection("Users")
+	_, err := collection.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
