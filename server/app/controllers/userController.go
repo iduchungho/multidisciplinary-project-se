@@ -208,3 +208,46 @@ func ChangeAvatar(c *fiber.Ctx) error {
 		"data":    user,
 	})
 }
+
+func GetAllUser(c *fiber.Ctx) error {
+	user, err := service.NewEntityContext("user")
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	res, errRes := user.GetEntity("")
+	if errRes != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": errRes.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": res,
+	})
+}
+
+func DeleteUser(c *fiber.Ctx) error {
+	username := c.Params("username")
+	user, err := service.NewEntityContext("user")
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	err = user.DeleteEntity("username", username)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"success": true,
+		"message": "user was deleted",
+		"user":    username,
+	})
+}
+
+func UpdateInformation(c *fiber.Ctx) error {
+	return nil
+}

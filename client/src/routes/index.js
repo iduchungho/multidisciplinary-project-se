@@ -7,6 +7,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Notification from "../pages/Notification";
 import Light from "../pages/Light";
+
 const publicRoutes = [
     {
         path: '/',

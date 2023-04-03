@@ -1,12 +1,16 @@
 import { useState, useEffect} from "react";
 import axios from "axios";
 
-import "./Dashboard.scss";
+import { updateTemper,updateHumi } from "../../actions/updateData";
+import dispatcher from "../../dispatcher/dispatcher";
+import { UpdateDataStore } from "../../stores/UpdateDataStore";
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
+import "./Dashboard.scss";
 
 
 
+const store1 = new UpdateDataStore(dispatcher);
 
 function Dashboard()
 {
@@ -56,11 +60,19 @@ function Dashboard()
         setTimeout(()=>{
             axios 
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/humidity/data')
-            .then(response => setHumi(response.data))
+            .then(response => 
+                {
+                    updateHumi(response.data)
+                    setHumi(store1.getState().value)
+                })
             .catch(error => console.error(error))
             axios 
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data')
-            .then(response => setTemper(response.data))
+            .then(response => 
+                {
+                    updateTemper(response.data)
+                    setTemper(store1.getState().value)
+                })
             .catch(error => console.error(error))
             axios 
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/ai/data')
@@ -86,7 +98,7 @@ function Dashboard()
         fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnled/data", {
         method: 'POST',
         headers: {
-            'X-AIO-Key': "aio_afrI19lBaFZkGhrZ88NekM0PICgj",
+            'X-AIO-Key': "aio_lHvG50bcjFwLBxfU8OF3O55Q1LRd",
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -104,7 +116,7 @@ function Dashboard()
         fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnfan/data", {
         method: 'POST',
         headers: {
-            'X-AIO-Key': "aio_afrI19lBaFZkGhrZ88NekM0PICgj",
+            'X-AIO-Key': "aio_lHvG50bcjFwLBxfU8OF3O55Q1LRd",
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -122,7 +134,7 @@ function Dashboard()
         fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btndoor/data", {
         method: 'POST',
         headers: {
-            'X-AIO-Key': "aio_afrI19lBaFZkGhrZ88NekM0PICgj",
+            'X-AIO-Key': "aio_lHvG50bcjFwLBxfU8OF3O55Q1LRd",
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)

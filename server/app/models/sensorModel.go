@@ -76,7 +76,7 @@ func (s *Sensors) GetEntity(param string) (interface{}, error) {
 	return sensors, nil
 }
 
-func (s *Sensors) DeleteEntity(param string) error {
+func (s *Sensors) DeleteEntity(key string, value string) error {
 	return nil
 }
 
