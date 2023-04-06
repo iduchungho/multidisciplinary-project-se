@@ -4,6 +4,7 @@ import LightChart from "../../components/chart/LightChart"
 // import {connect} from "mqtt";
 import "./Light.css"
 import {connect} from 'mqtt/dist/mqtt'
+import {useSelector} from "react-redux"
 // Import react-circular-progressbar module and styles
 import {
     CircularProgressbar,
@@ -14,6 +15,8 @@ import "react-circular-progressbar/dist/styles.css";
 
 function Light() {
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
+    const light = useSelector((state)=>state.IoT.light)
+    console.log(light)
     const [lights, setLight] = useState([]);
     let feed = [
             "tsunekiara/feeds/btnfan"
@@ -86,8 +89,8 @@ function Light() {
                 <div className='Light__right-clock'>
                     <div className='clock-temperature'>
                         <CircularProgressbar
-                            value={clockLight}
-                            text={`${clockLight}%`}
+                            value={light}
+                            text={`${light}%`}
                             strokeWidth={8}
                             styles={buildStyles({
                                 pathColor: colorLight,
