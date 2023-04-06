@@ -13,5 +13,5 @@ func UserRoute(r *fiber.App) {
 	r.Put("/api/user/changeAvatar/:id", middleware.RequireUser, controller.ChangeAvatar)
 	r.Get("/api/user/getAll", middleware.RequireUser, controller.GetAllUser)
 	r.Delete("/api/user/delete/:username", middleware.RequireUser, controller.DeleteUser)
-	r.Put("/api/user/update", middleware.RequireUser, controller.UpdateInformation)
+	r.Put("/api/user/update/:username", middleware.RequireUser, controller.UpdateInformation)
 }

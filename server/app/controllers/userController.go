@@ -9,7 +9,7 @@ import (
 	"smhome/pkg/services"
 	"smhome/pkg/utils"
 	"smhome/platform/cache"
-	cloud "smhome/platform/cloudinary"
+	"smhome/platform/cloudinary"
 )
 
 func Login(c *fiber.Ctx) error {
@@ -112,13 +112,13 @@ func AddNewUser(c *fiber.Ctx) error {
 
 	userMd.Password = string(hashPass)
 	if errIs := newUser.InsertData(userMd); errIs != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
 			"error": errIs.Error(),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"data": userMd,
+		"data": newUser,
 	})
 
 }
@@ -249,5 +249,56 @@ func DeleteUser(c *fiber.Ctx) error {
 }
 
 func UpdateInformation(c *fiber.Ctx) error {
-	return nil
+	var body struct {
+		FirstName string `json:"firstname"`
+		LastName  string `json:"lastname"`
+		Password  string `json:"password"`
+	}
+
+	if c.BodyParser(&body) != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "can't read body request",
+		})
+	}
+
+	username := c.Params("username")
+
+	user, _ := service.NewEntityContext("user")
+	_, err := user.FindDocument("username", username)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	hashPass, err := utils.GenPassword(body.Password)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	if err = user.UpdateData("password", string(hashPass)); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	if err = user.UpdateData("firstname", body.FirstName); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	if err = user.UpdateData("lastname", body.LastName); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data":    body,
+		"success": true,
+		"message": "ok",
+	})
 }
