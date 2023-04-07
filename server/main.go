@@ -1,7 +1,7 @@
 // backend for smart home projects
 // author:
 //
-//	@k4ioshin
+//	@yesic4n
 //	@lamdienchinh
 //	@Nguyenleminhbao-tt5
 //
