@@ -1,4 +1,4 @@
-const Dispatcher = require('flux').Dispatcher;
-const dispatcher = new Dispatcher();
+// const Dispatcher = require('flux').Dispatcher;
+// const dispatcher = new Dispatcher();
 
-export default dispatcher;
+// export default dispatcher;

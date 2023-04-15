@@ -1,10 +1,10 @@
 import { React, useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import {update} from "../../redux/apiRequest"
 import LightChart from "../../components/chart/LightChart"
 // import {connect} from "mqtt";
 import "./Light.css"
-import {connect} from 'mqtt/dist/mqtt'
-import {useSelector} from "react-redux"
+import {useSelector, useDispatch} from "react-redux"
 // Import react-circular-progressbar module and styles
 import {
     CircularProgressbar,
@@ -15,54 +15,27 @@ import "react-circular-progressbar/dist/styles.css";
 
 function Light() {
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
-    const light = useSelector((state)=>state.IoT.light)
-    console.log(light)
+    const dispatch = useDispatch()
+    let light = useSelector((state)=>state.IoT.light)
+    light = JSON.parse(light)
+    console.log("Hello", light)
     const [lights, setLight] = useState([]);
-    let feed = [
-            "tsunekiara/feeds/btnfan"
-        ]
-    let client = connect('mqtt://io.adafruit.com',{
-        username: "tsunekiara",
-        password: "aio_eCDQ29QbE0aOpIPReVfQthMjA7Vp",
-      });
-    
-    client.on('connect', () => {
-        // sub đúng kênh để nhận dữ liệu
-        for (const topic in feed){
-            client.subscribe(feed[topic]);
-            console.log('connected ' + feed[topic]);
-        }
-        
-    });
-    
-    client.on('reconnect', () => {
-        for (const topic in feed){
-            client.subscribe(feed[topic]);
-            console.log('reconnected ' + feed[topic]);
-        }
-    });
-    
-    client.on('error', (err) => console.log('error', err));
-    
-    client.on('offline', () => connect = false);
-    
-    client.on('close', () => connect = false);
-    
-    client.on('message', (topic, message) => {
-        console.log(message.toString('utf8'));
-    }); 
-    
-
     useEffect(() => {
-        setTimeout(() => {
-            axios
-                .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/light/data')
-                .then(response => setLight(response.data))
-                .catch(error => console.error(error))
-        }, 10000)
-
+        // setTimeout(() => {
+        //     axios
+        //         .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/light/data')
+        //         .then(response => setLight(response.data))
+        //         .catch(error => console.error(error))
+        // }, 10000)
+        const intervalId = setInterval(() => {
+            update(dispatch)
+            setLight(light)
+          }, 10000);
+      
+          return () => clearInterval(intervalId);
     }, [lights]);
     var clockLight = lights.length == 0 ? 0 : lights[0].value;
+    console.log("Clock", clockLight)
     var colorLight = "rgb(236, 241, 50)";
 
     // xử lý dữ liệu đồ thị
@@ -89,8 +62,8 @@ function Light() {
                 <div className='Light__right-clock'>
                     <div className='clock-temperature'>
                         <CircularProgressbar
-                            value={light}
-                            text={`${light}%`}
+                            value={clockLight}
+                            text={`${clockLight}%`}
                             strokeWidth={8}
                             styles={buildStyles({
                                 pathColor: colorLight,
