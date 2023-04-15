@@ -10,7 +10,7 @@ import "./Dashboard.scss";
 
 
 
-const store1 = new UpdateDataStore(dispatcher);
+// const store1 = new UpdateDataStore(dispatcher);
 
 function Dashboard()
 {
@@ -63,7 +63,7 @@ function Dashboard()
             .then(response => 
                 {
                     updateHumi(response.data)
-                    setHumi(store1.getState().value)
+                    // setHumi(store1.getState().value)
                 })
             .catch(error => console.error(error))
             axios 
@@ -71,7 +71,7 @@ function Dashboard()
             .then(response => 
                 {
                     updateTemper(response.data)
-                    setTemper(store1.getState().value)
+                    // setTemper(store1.getState().value)
                 })
             .catch(error => console.error(error))
             axios 
