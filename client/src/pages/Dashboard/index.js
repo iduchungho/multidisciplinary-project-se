@@ -1,9 +1,6 @@
 import { useState, useEffect} from "react";
 import axios from "axios";
-
-import { updateTemper,updateHumi } from "../../actions/updateData";
-import dispatcher from "../../dispatcher/dispatcher";
-import { UpdateDataStore } from "../../stores/UpdateDataStore";
+import {useSelector} from "react-redux"
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
 import "./Dashboard.scss";
@@ -16,6 +13,8 @@ function Dashboard()
 {
 
     // công tắc đèn led
+    const user = useSelector((state) => state.auth_.login?.currentUser)
+    console.log(user)
     const [ledBtn, setLed]=useState(0);
     const clickLed=()=>{
         setLed(!ledBtn);
@@ -62,7 +61,6 @@ function Dashboard()
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/humidity/data')
             .then(response => 
                 {
-                    updateHumi(response.data)
                     // setHumi(store1.getState().value)
                 })
             .catch(error => console.error(error))
@@ -70,7 +68,6 @@ function Dashboard()
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data')
             .then(response => 
                 {
-                    updateTemper(response.data)
                     // setTemper(store1.getState().value)
                 })
             .catch(error => console.error(error))

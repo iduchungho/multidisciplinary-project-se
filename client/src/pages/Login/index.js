@@ -1,33 +1,20 @@
 import './Login.css'
 import React, { useState } from "react";
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {login} from '../../redux/apiRequest';
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate()
+    const dispatch =useDispatch();
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Username:', username);
-        console.log('Password:', password);
-        try {
-            let response = await axios.post('http://localhost:8080/api/user/login', {
-                username: username,
-                password: password,
-            });
-            console.log(response.data); // chuỗi token trả về từ server
-            let data = response.data.data;
-            let fullname = data.firstname + data.lastname
-            let user = {
-                username: fullname,
-                avatar: data.avatar
-            }
-            navigate('/');
-        } catch (error) {
-            console.error(error);
-            alert('Đăng nhập thất bại')
-            navigate('/login');
+        const newUser = {
+            username: username,
+            password: password
         }
+        login(newUser, dispatch, navigate)
     };
     return (
         <div className='login'>
