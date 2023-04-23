@@ -12,6 +12,7 @@ export const IoTSlice = createSlice ({
     reducers: {
         updateStart: (state) => {
             state.isFetching = true;
+            state.error = false;
         },
         updateSuccess: (state, action) => {
             state.isFetching = false;

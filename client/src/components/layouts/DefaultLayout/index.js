@@ -4,8 +4,8 @@ import "../../base.css";
 import sun from "../../../assets/sun.png";
 import cloudy from "../../../assets/cloudy.png";
 import night from "../../../assets/night.png";
-
-function DefaultLayout({children})
+import { Outlet } from "react-router-dom";
+function DefaultLayout()
 {
     var date = new Date();
     var hour=date.getHours();
@@ -82,6 +82,7 @@ function DefaultLayout({children})
           break;
       }
     return(
+      <div className="App">
         <div className="wrapper">
             <div className="cover">
                 <div className="cover__item item1"></div>
@@ -140,14 +141,14 @@ function DefaultLayout({children})
                             </div>
                         </header>
                         <div className="content">
-                            {children}
+                          <Outlet></Outlet>
                         </div>
                         
                     </div>
                 </div>
             </div>  
         </div>
-           
+      </div>     
 
     );
 }
