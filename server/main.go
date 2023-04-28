@@ -14,7 +14,6 @@ package main
 
 import (
 	appli "smhome/app"
-	// command line for heroku deployment
 	"smhome/pkg/utils"
 )
 
@@ -22,7 +21,7 @@ import (
 // @version 1.0
 // @description: main function where every beginning.
 // @BasePath /api
-// @k4ioshin GitHub
+// @yesic4n GitHub
 // @name Authorization
 func main() {
 	////////////////////////////////
