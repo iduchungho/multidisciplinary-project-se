@@ -1,7 +1,9 @@
 import "./Register.css";
 import React, { useState } from "react";
-import axios from 'axios';
+import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import { register } from '../../redux/apiRequest';
+import { useDispatch } from 'react-redux';
 async function localFileToObject(filePath) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -30,15 +32,17 @@ function Register() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
+    const dispatch = useDispatch();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
             const formData = new FormData();
             const type = 'user';
-            const filePath = '../../assets/images/avatar.png';
-            let img = await localFileToObject(filePath)
-            console.log(img)
+            // const filePath = '../../assets/images/avatar.png';
+            // let img = await localFileToObject(filePath)
+            // console.log(img)
+            let img = "none";
             formData.append('type', type);
             formData.append('id', phonenumber);
             formData.append('firstname', firstname);
@@ -46,11 +50,10 @@ function Register() {
             formData.append('username', username);
             formData.append('password', password);
             formData.append('avatar', img);
-            console.log(formData);
-            let response = await axios.post('http://localhost:8080/api/user/new', formData);
+            let response = await register(formData, dispatch, navigate);
             console.log(response.data); // chuỗi token trả về từ server
             alert('Đăng ký tài khoản thành công');
-            navigate('/login');
+            navigate('/');
         } catch (error) {
             console.error(error);
             alert('Đăng ký tài khoản thất bại');
@@ -86,7 +89,12 @@ function Register() {
                                 <input type="password" onChange={(event) => setPassword(event.target.value)} />
                                 <label >Password</label>
                             </div>
-                            <button className="sign-up">Sign up</button>
+                            <div className="register-btn-wrap">
+                                <button className="sign-up">Sign up</button>
+                                <div>
+                                    <Link className ="register-link" to="/">Had an account</Link>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

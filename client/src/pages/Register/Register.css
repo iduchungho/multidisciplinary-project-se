@@ -85,3 +85,17 @@ top: -5px;
     display: flex;
     flex-direction: row;
 }
+.register-btn-wrap {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 20px;
+}
+.register-link{
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+.register-link:hover{
+    text-decoration: underline;
+}

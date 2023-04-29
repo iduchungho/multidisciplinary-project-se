@@ -6,7 +6,7 @@ import {login} from '../../redux/apiRequest';
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const dispatch =useDispatch();
     const handleSubmit = async (event) => {
         event.preventDefault();

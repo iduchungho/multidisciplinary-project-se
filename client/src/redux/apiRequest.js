@@ -21,7 +21,7 @@ export const register = async (user, dispatch, navigate) => {
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/api/user/new`, user)
         dispatch(registerSuccess())
-        navigate("/")
+        return res
     }
     catch (err) {
         dispatch(registerFailed())
