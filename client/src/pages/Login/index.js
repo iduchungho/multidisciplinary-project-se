@@ -2,12 +2,12 @@ import './Login.css'
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import {login} from '../../redux/apiRequest';
+import { login } from '../../redux/apiRequest';
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const dispatch =useDispatch();
+    const dispatch = useDispatch();
     const handleSubmit = async (event) => {
         event.preventDefault();
         const newUser = {

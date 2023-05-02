@@ -2,18 +2,21 @@ import axios from "axios"
 import {updateStart, updateSuccess, updateFail} from "./IoTSlice"
 import {
     loginFailed, loginStart, loginSuccess, registerStart, registerSuccess, registerFailed, logoutFailed, logoutStart, logoutSuccess,
+    changeAvatarStart, changeAvatarSuccess, changeAvatarFailed
 } from "./authSlice"
 
 export const login = async (user, dispatch, navigate) => {
     dispatch(loginStart())
     try {
-        const res = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/api/user/login`, user)
+        const res = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/api/user/login`, user, {
+            withCredentials: true
+          });
         dispatch(loginSuccess(res.data))
-        console.log(res.data)
         navigate("/dashboard")
     }
     catch (err) {
         dispatch(loginFailed())
+        alert("Login failed")
     }
 }
 export const register = async (user, dispatch, navigate) => {
@@ -55,5 +58,27 @@ export const update = async (dispatch) => {
     }
     catch (err) {
         dispatch(updateFail())
+    }
+}
+export const changeavatar = async (new_avatar, dispatch, id) => {
+    dispatch(changeAvatarStart())
+    try {
+        const new_user = await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/api/user/changeAvatar?id=${id}`, new_avatar, {
+            withCredentials: true
+          })
+        dispatch(changeAvatarSuccess(new_user.data.data))
+    } catch (err) {
+        dispatch(changeAvatarFailed())
+    }
+}
+export const changeinfor = async (new_avatar, dispatch, id) => {
+    dispatch(changeAvatarStart())
+    try {
+        const new_user = await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/api/user/changeAvatar?id=${id}`, new_avatar, {
+            withCredentials: true
+          })
+        dispatch(changeAvatarSuccess(new_user.data.data))
+    } catch (err) {
+        dispatch(changeAvatarFailed())
     }
 }

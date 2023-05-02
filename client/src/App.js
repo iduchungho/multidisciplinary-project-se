@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Notification from "./pages/Notification";
 import Light from "./pages/Light";
-
+import User from './pages/User';
 function App() {
   return (
         <Router>
@@ -22,8 +22,9 @@ function App() {
                     <Route path="/light" element={<Light></Light>}/>
                     <Route path="/notification" element={<Notification></Notification>} />
                     <Route path="/temperHumi" element={<TemperHumi></TemperHumi>} />
-                    {/* <Route path="." element={<></>}></Route> */}
+                    <Route path="/user" element={<User></User>} />
                 </Route>
+                <Route path="*" element={<div><h1>Error 404: Page not found</h1></div>}></Route>
             </Routes>
         </Router>
     );
