@@ -4,27 +4,6 @@ import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { register } from '../../redux/apiRequest';
 import { useDispatch } from 'react-redux';
-async function localFileToObject(filePath) {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', filePath, true);
-        xhr.responseType = 'blob';
-        xhr.onload = function (event) {
-            if (xhr.status !== 200) {
-                console.error('Không thể tải nội dung từ đường dẫn:', filePath, xhr.statusText);
-                reject(xhr.statusText);
-            } else {
-                const blob = new Blob([xhr.response]);
-                const file = new File([blob], filePath.split('/').pop(), { type: blob.type });
-                resolve(file);
-            }
-        };
-        xhr.onerror = function () {
-            reject(xhr.statusText);
-        }
-        xhr.send();
-    });
-}
 function Register() {
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
@@ -39,9 +18,6 @@ function Register() {
         try {
             const formData = new FormData();
             const type = 'user';
-            // const filePath = '../../assets/images/avatar.png';
-            // let img = await localFileToObject(filePath)
-            // console.log(img)
             let img = "none";
             formData.append('type', type);
             formData.append('id', phonenumber);
