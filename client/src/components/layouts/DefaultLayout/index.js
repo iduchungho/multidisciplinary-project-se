@@ -6,50 +6,53 @@ import "../../base.css";
 import sun from "../../../assets/sun.png";
 import cloudy from "../../../assets/cloudy.png";
 import night from "../../../assets/night.png";
+import { logout } from "../../../redux/apiRequest.js"
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useSelector } from "react-redux"
+function DefaultLayout() {
 
+  const user = useSelector((state) => state.auth_.login?.currentUser)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [btnSider, setBtnSider] = useState(0);
+  const active = {
+    backgroundColor: "#6c29fb",
+    borderRadius: "5px"
+  }
 
-function DefaultLayout()
-{
+  var date = new Date();
+  var hour = date.getHours();
+  var day = "", num = date.getDay();
+  var weather;
 
-    const [btnSider, setBtnSider] = useState(0);
-    const active= {
-      backgroundColor:"#6c29fb",
-      borderRadius: "5px"
-    }
+  if (hour >= 6 && hour <= 12) weather = sun;
+  else if (hour > 12 && hour < 18) weather = cloudy;
+  else weather = night;
 
-    var date = new Date();
-    var hour=date.getHours();
-    var day="",num=date.getDay();
-    var weather;
-
-    if (hour >=6 && hour <= 12 ) weather=sun;
-    else if  (hour >12 && hour < 18  ) weather=cloudy;
-    else weather=night;
-
-    switch(num)
-    {
-      case 0:
-        day="Sunday";
-        break;
-      case 1:
-        day="Monday";
-        break;
-      case 2:
-        day="Tuesday";
-        break;
-      case 3:
-        day="Wednesday";
-        break;
-      case 4:
-        day="Thursday";
-        break;
-      case 5:
-        day="Friday";
-        break;
-      case 6:
-        day="Saturday";
-        break;
-    }
+  switch (num) {
+    case 0:
+      day = "Sunday";
+      break;
+    case 1:
+      day = "Monday";
+      break;
+    case 2:
+      day = "Tuesday";
+      break;
+    case 3:
+      day = "Wednesday";
+      break;
+    case 4:
+      day = "Thursday";
+      break;
+    case 5:
+      day = "Friday";
+      break;
+    case 6:
+      day = "Saturday";
+      break;
+  }
 
     var month="",num1=date.getMonth();
     switch(num1)
@@ -126,7 +129,7 @@ function DefaultLayout()
                             </li>
                             <li className="siderbar__list-item"  style = { btnSider==4?active:{}}>
                               <Link to="/notification" onClick={()=>setBtnSider(4)}>
-                                  <i class="gear-icon fa-solid fa-bell"></i>
+                                  <i class="gear-icon fa-solid fa-gear"></i>
                                </Link>   
                             </li>
                         </ul>
@@ -152,24 +155,24 @@ function DefaultLayout()
                                 </div>
                                 <div className="header__time-infor">
 
-                                    <span className="time1">{hour}:{date.getMinutes()<10?"0"+date.getMinutes():date.getMinutes()}  
-                                    {
-                                        date.getHours()>=12 ? " PM" : " AM"
-                                    } </span>
-                                    <span className="time2">{day}, {date.getDate()} {month} {date.getFullYear()}</span>
-                                </div>
-                            </div>
-                        </header>
-                        <div className="content">
-                          <Outlet></Outlet>
-                        </div>
-                        
-                    </div>
+                    <span className="time1">{hour}:{date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}
+                      {
+                        date.getHours() >= 12 ? " PM" : " AM"
+                      } </span>
+                    <span className="time2">{day}, {date.getDate()} {month} {date.getFullYear()}</span>
+                  </div>
                 </div>
-            </div>  
-        </div>
-      </div>     
+              </header>
+              <div className="content">
+                <Outlet></Outlet>
+              </div>
 
-    );
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  );
 }
 export default DefaultLayout;
