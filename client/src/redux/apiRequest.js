@@ -30,12 +30,11 @@ export const register = async (user, dispatch, navigate) => {
         dispatch(registerFailed())
     }
 }
-export const logout = async (token, dispatch, navigate) => {
+export const logout = async (dispatch, navigate) => {
     dispatch(logoutStart())
     try {
-        console.log(token)
-        const logout = await axios.post('', {
-            headers: { token: `Bearer ${token}` },
+        const logout = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/user/logout`, {
+            withCredentials: true
         })
         dispatch(logoutSuccess())
         navigate('/')
@@ -65,7 +64,7 @@ export const changeavatar = async (new_avatar, dispatch, id) => {
     try {
         const new_user = await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/api/user/changeAvatar?id=${id}`, new_avatar, {
             withCredentials: true
-          })
+        })
         dispatch(changeAvatarSuccess(new_user.data.data))
     } catch (err) {
         dispatch(changeAvatarFailed())
@@ -76,7 +75,7 @@ export const changeinfor = async (new_avatar, dispatch, id) => {
     try {
         const new_user = await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/api/user/changeAvatar?id=${id}`, new_avatar, {
             withCredentials: true
-          })
+        })
         dispatch(changeAvatarSuccess(new_user.data.data))
     } catch (err) {
         dispatch(changeAvatarFailed())
