@@ -1,6 +1,5 @@
 import './User.css'
 import React, { useState, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {useSelector} from "react-redux"
 import { TextField, Button, Avatar, Input } from '@mui/material';
@@ -15,10 +14,10 @@ function User() {
     const [oldpassword, setOldpassword] = useState('');
     const [newpassword, setNewpassword] = useState('');
     const [avatar, setAvatar] = useState(user.data.avatar);
+    const [avatarchange, setAvatarchange] = useState(user.data.avatar);
     const form1Ref = useRef(null);
     const form2Ref = useRef(null);
     const form3Ref = useRef(null);
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleSubmit1 = async (event) => {
         event.preventDefault();
@@ -39,11 +38,12 @@ function User() {
         event.preventDefault();
         const file = event.target.files[0];
         setAvatar(file);
+        setAvatarchange(URL.createObjectURL(file))
     };
     return (
         <div className='user-wrapper'>
             <div className='user-field1'>
-                <Avatar className="avatar" alt="Remy Sharp" src={avatar} sx={{ width: 200, height: 200 }} style={{ border: 0 }} />
+                <Avatar className="avatar" alt="Remy Sharp" src={avatarchange} sx={{ width: 200, height: 200 }} style={{ border: 0 }} />
                 <div className="avatar-wrapper">
                     <Input
                         type="file"
