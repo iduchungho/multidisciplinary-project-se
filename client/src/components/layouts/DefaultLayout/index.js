@@ -126,7 +126,7 @@ function DefaultLayout()
                             </li>
                             <li className="siderbar__list-item"  style = { btnSider==4?active:{}}>
                               <Link to="/notification" onClick={()=>setBtnSider(4)}>
-                                  <i class="gear-icon fa-solid fa-gear"></i>
+                                  <i class="gear-icon fa-solid fa-bell"></i>
                                </Link>   
                             </li>
                         </ul>

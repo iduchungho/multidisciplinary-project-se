@@ -62,6 +62,8 @@ function Dashboard()
             .then(response => 
                 {
                     // setHumi(store1.getState().value)
+                    setHumi(response.data)
+                  
                 })
             .catch(error => console.error(error))
             axios 
@@ -69,6 +71,7 @@ function Dashboard()
             .then(response => 
                 {
                     // setTemper(store1.getState().value)
+                    setTemper(response.data)
                 })
             .catch(error => console.error(error))
             axios 
