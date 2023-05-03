@@ -108,7 +108,15 @@
     color: white;
     font-size: 20px;
 }
-
+.logout-icon
+{
+    color: white;
+    font-size: 20px;
+}
+.logout-wrapper
+{
+    cursor: pointer;
+}
 .active
 {
     background-color: #6c29fb;
