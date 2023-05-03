@@ -1,12 +1,22 @@
+import { Outlet, Link } from "react-router-dom";
+import { useState } from "react";
 
 import "./DefaultLayout.css";
 import "../../base.css";
 import sun from "../../../assets/sun.png";
 import cloudy from "../../../assets/cloudy.png";
 import night from "../../../assets/night.png";
-import { Outlet } from "react-router-dom";
+
+
 function DefaultLayout()
 {
+
+    const [btnSider, setBtnSider] = useState(0);
+    const active= {
+      backgroundColor:"#6c29fb",
+      borderRadius: "5px"
+    }
+
     var date = new Date();
     var hour=date.getHours();
     var day="",num=date.getDay();
@@ -94,20 +104,30 @@ function DefaultLayout()
                 <div className="main">
                     <div className="siderbar">
                         <ul className="siderbar__list">
-                            <li className="siderbar__list-item active">
-                                <i class="home-icon fa-solid fa-house"></i>
+                            <li className="siderbar__list-item"  style = { btnSider==0?active:{}}>
+                                <Link to ="/dashboard" onClick={()=>setBtnSider(0)}>
+                                  <i class="home-icon fa-solid fa-house"></i>
+                                </Link>
                             </li>
-                            <li className="siderbar__list-item">
-                                <i class="door-icon fa-solid fa-door-open"></i>
+                            <li className="siderbar__list-item"  style = { btnSider==1?active:{}}>
+                                <Link to='/door' onClick={()=>setBtnSider(1)}>
+                                  <i class="door-icon fa-solid fa-door-open"></i>
+                                </Link>
                             </li>
-                            <li className="siderbar__list-item">
-                                <i class="light-icon fa-regular fa-lightbulb"></i>
+                            <li className="siderbar__list-item"  style = { btnSider==2?active:{}}>
+                                <Link to ="/light" onClick={()=>setBtnSider(2)}>
+                                  <i class="light-icon fa-regular fa-lightbulb"></i>
+                                </Link>
                             </li>
-                            <li className="siderbar__list-item">
-                                <i class="temper-icon fa-solid fa-temperature-three-quarters"></i>
+                            <li className="siderbar__list-item"  style = { btnSider==3?active:{}}>
+                                <Link to="/temperHumi" onClick={()=>setBtnSider(3)}>
+                                  <i class="temper-icon fa-solid fa-temperature-three-quarters"></i> 
+                                </Link>
                             </li>
-                            <li className="siderbar__list-item">
-                                <i class="gear-icon fa-solid fa-gear"></i>
+                            <li className="siderbar__list-item"  style = { btnSider==4?active:{}}>
+                              <Link to="/notification" onClick={()=>setBtnSider(4)}>
+                                  <i class="gear-icon fa-solid fa-gear"></i>
+                               </Link>   
                             </li>
                         </ul>
                     </div>

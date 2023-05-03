@@ -46,8 +46,10 @@
     justify-content: center;
 }
 .Light__right-heading{
-    color: var(--primary3-color);
-    margin: 0 0 10px 20px;
+    color: white;
+    margin: 0 0 15px 0;
+    text-align: center;
+    font-size: 27px;
 
 }
 .clock-temperature{

@@ -3,7 +3,7 @@ import axios from "axios";
 import {useSelector} from "react-redux"
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
-import "./Dashboard.scss";
+import "./Dashboard.css";
 
 
 
@@ -189,7 +189,7 @@ function Dashboard()
                                 <i className="led-btn-icon fa-solid fa-lightbulb"></i>
                             </div>
                             <div className="led-text">
-                                <span className="led-infor">LIGHT LED</span>
+                                <span className="led-infor">LED</span>
                                 <span className="led-connect"> {!ledBtn ?"Not Connected":"Connected"}</span>
                             </div>
                             <label class="switch">
