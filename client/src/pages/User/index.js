@@ -2,12 +2,11 @@ import './User.css'
 import React, { useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import {useSelector} from "react-redux"
+import { useSelector } from "react-redux"
 import { TextField, Button, Avatar, Input } from '@mui/material';
-import {changeavatar} from '../../redux/apiRequest';
+import { changeavatar, changeinfor, changepass } from '../../redux/apiRequest';
 function User() {
     const user = useSelector((state) => state.auth_.login?.currentUser)
-    console.log(user)
     const [firstname, setFirstname] = useState(user.data.firstname);
     const [lastname, setLastname] = useState(user.data.lastname);
     const [email, setEmail] = useState(user.data.email);
@@ -24,17 +23,26 @@ function User() {
     const handleSubmit1 = async (event) => {
         event.preventDefault();
         const formData = new FormData();
-        formData.append("avt",avatar);
+        formData.append("avt", avatar);
         console.log("User", user)
         changeavatar(formData, dispatch, user.data.id);
     };
     const handleSubmit2 = async (event) => {
         event.preventDefault();
         const formData = new FormData();
+        formData.append("firstname", firstname)
+        formData.append("lastname", lastname)
+        formData.append("email", email)
+        formData.append("phone", phonenumber)
+        changeinfor(formData, dispatch, user.data.id)
     };
     const handleSubmit3 = async (event) => {
         event.preventDefault();
-        const formData = new FormData();
+        let data ={
+            "old_password": oldpassword,
+            "new_password": newpassword
+        }
+        changepass(data, dispatch, user.data.id)
     };
     const handleFileChange = async (event) => {
         event.preventDefault();

@@ -2,7 +2,8 @@ import axios from "axios"
 import {updateStart, updateSuccess, updateFail} from "./IoTSlice"
 import {
     loginFailed, loginStart, loginSuccess, registerStart, registerSuccess, registerFailed, logoutFailed, logoutStart, logoutSuccess,
-    changeAvatarStart, changeAvatarSuccess, changeAvatarFailed
+    changeAvatarStart, changeAvatarSuccess, changeAvatarFailed, changeInforStart, changeInforSuccess, changeInforFailed,
+    changePassStart, changePassSuccess, changePassFailed
 } from "./authSlice"
 
 export const login = async (user, dispatch, navigate) => {
@@ -66,18 +67,37 @@ export const changeavatar = async (new_avatar, dispatch, id) => {
             withCredentials: true
         })
         dispatch(changeAvatarSuccess(new_user.data.data))
+        alert("Change Avatar success")
     } catch (err) {
         dispatch(changeAvatarFailed())
+        alert("Change Avatar failed")
     }
 }
-export const changeinfor = async (new_avatar, dispatch, id) => {
-    dispatch(changeAvatarStart())
+export const changeinfor = async (new_infor, dispatch, id) => {
+    dispatch(changeInforStart())
     try {
-        const new_user = await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/api/user/changeAvatar?id=${id}`, new_avatar, {
+        const new_user = await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/api/user/update/info?id=${id}`, new_infor, {
             withCredentials: true
         })
-        dispatch(changeAvatarSuccess(new_user.data.data))
+        console.log(new_user)
+        dispatch(changeInforSuccess(new_user.data.message))
+        alert("Change User's Information Success")
     } catch (err) {
-        dispatch(changeAvatarFailed())
+        dispatch(changeInforFailed())
+        alert("Change User's Information Failed")
+    }
+}
+export const changepass = async (changepass, dispatch, id) => {
+    dispatch(changePassStart())
+    try {
+        const new_user = await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/api/user/update/pass?id=${id}`, changepass, {
+            withCredentials: true
+        })
+        console.log(new_user)
+        dispatch(changePassSuccess())
+        alert("Change Password Success")
+    } catch (err) {
+        dispatch(changePassFailed())
+        alert("Change Password Failed")
     }
 }
