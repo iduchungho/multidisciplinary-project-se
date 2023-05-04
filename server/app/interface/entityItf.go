@@ -18,7 +18,7 @@ type ISensorRepo interface {
 }
 
 type INotifyRepo interface {
-	GetAllNotify() ([]model.Notification, error)
+	GetAllNotify(userID string) ([]model.Notification, error)
 	CreateNotify(payload model.Notification) (*model.Notification, error)
 	DeleteNotifyById(id string) error
 }

@@ -41,8 +41,8 @@ func (doc Document) GetAllAction(userID string) ([]Action, error) {
 	return ActionDocx{Collection: doc.collection}.GetAllAction(userID)
 }
 
-func (doc Document) GetAllNotify() ([]Notification, error) {
-	return NotifyDocx{Collection: doc.collection}.GetAllNotify()
+func (doc Document) GetAllNotify(userID string) ([]Notification, error) {
+	return NotifyDocx{Collection: doc.collection}.GetAllNotify(userID)
 }
 
 func (doc Document) CreateNotify(payload Notification) (*Notification, error) {

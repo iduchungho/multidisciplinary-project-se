@@ -212,7 +212,7 @@ func UpdateInformation(c *fiber.Ctx) error {
 	}
 
 	userService := service.NewUserService()
-	_, err := userService.UpdateInfo(id, body.FirstName, body.LastName, body.Email, body.Phone)
+	res, err := userService.UpdateInfo(id, body.FirstName, body.LastName, body.Email, body.Phone)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error":   err.Error(),
@@ -222,7 +222,7 @@ func UpdateInformation(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"success": true,
-		"message": "ok",
+		"message": res,
 	})
 }
 
