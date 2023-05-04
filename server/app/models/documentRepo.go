@@ -73,6 +73,14 @@ func (doc Document) UpdateSensorByName(name string) error {
 	return SensorDocx{Collection: doc.collection}.UpdateSensorByName(name)
 }
 
+func (doc Document) PushSensorData(data SensorData) (*SensorData, error) {
+	return SensorDataDocx{Collection: doc.collection}.PushSensorData(data)
+}
+
+func (doc Document) UpdateSensorData(data SensorData) (*SensorData, error) {
+	return SensorDataDocx{Collection: doc.collection}.UpdateSensorData(data)
+}
+
 func (doc Document) GetSensorAdafruit(name string) (*Sensors, error) {
 	return SensorAdafruit{Conn: doc.collection}.GetSensorByName(name)
 }

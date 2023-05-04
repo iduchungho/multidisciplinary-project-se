@@ -27,3 +27,8 @@ type IActionRepo interface {
 	CreateAction(action model.Action) (*model.Action, error)
 	GetAllAction(userID string) ([]model.Action, error)
 }
+
+type IDataRepo interface {
+	PushSensorData(data model.SensorData) (*model.SensorData, error)
+	UpdateSensorData(data model.SensorData) (*model.SensorData, error)
+}
