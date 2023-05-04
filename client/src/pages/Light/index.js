@@ -50,7 +50,7 @@ function Light() {
 
             </div>
             <div className="Light__right">
-                <h2 className='Light__right-heading'>Light Information</h2>
+                <h2 className='Light__right-heading'>Clock</h2>
                 <div className='Light__right-clock'>
                     <div className='clock-temperature'>
                         <CircularProgressbar

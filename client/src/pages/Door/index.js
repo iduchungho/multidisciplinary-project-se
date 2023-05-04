@@ -31,29 +31,61 @@ function Door()
     return(
         <div className='Door'>
             <div className='Door__left'>
-                <div className='Door__left-camera'>
-                    { cameraBtn && 
+                <div className='Door__left-camera'>                  
                     <div className='card'>
-                           <WebcamCapture />
-                    </div>}
-                    { !cameraBtn && 
-                        <div className='card'>
-                           
-                        </div>
-                    }
+                        {cameraBtn && <WebcamCapture/>}
+                    </div>
                     <span className='antenna-left'></span>
                     <span className='antenna-right'></span>
                 </div>
                 <div className='Door__left-controlDoor'>
-                    <button className="btn-camera btn" style={{ backgroundColor: cameraBtn && '#1babfc' }} >
+
+
+                    <div className='ai__content'>
+                        <div className='ai__content-heading'> AI : Bảo </div>
+                       
+                    </div>
+
+                </div>
+
+            </div>
+            <div className='Door__right'>
+                <div className='fan__control'>
+                    <div className='fan__control-icon '>
+                        <i class="fan fa-solid fa-fan" style={{ animation: `fan-rotate ${speedFan}s 1s forwards`}}></i>
+                    </div>
+                </div>
+                <div className='door__control'>
+                    <button className="btn-fan btn" style={{ backgroundColor: fanBtn && '#1babfc' }} >
+                        <span className='span1'></span>
+                        <span className='span2'></span>
+                        <span className='span3'></span>
+                        <span className='span4'></span>
+                        <div className="fan-border">
+                            <i className="fan-btn-icon fa-solid fa-fan"></i>
+                        </div>
+                        <div className="fan-text">
+                            <span className="fan-infor">FAN</span>
+                            <span className="fan-connect"> {!fanBtn ?"Not Connected":"Connected"}</span>
+                        </div>
+                        <label class="switch">
+                            <input className="btn-switch" type="checkbox" onClick={clickFan} checked={fanBtn}/>
+                            <span class="slider">
+                                <ul className="switch__select">
+                                    <li className="switch__select-item">Off</li>
+                                    <li className="switch__select-item">On</li>
+                                </ul>
+                            </span>
+                        </label>
+                    </button>
+                     <button className="btn-camera btn" style={{ backgroundColor: cameraBtn && '#1babfc' }} >
                         <span className='span1'></span>
                         <span className='span2'></span>
                         <span className='span3'></span>
                         <span className='span4'></span>
 
                         <div className="camera-border">
-                            { cameraBtn && <i className="camera-btn-icon fa-solid fa-video"></i> }
-                            { !cameraBtn && <img src={noVideo} className="novideo-btn-icon"/>}
+                            { cameraBtn==1?<i className="camera-btn-icon fa-solid fa-video"></i> :<img src={noVideo} className="novideo-btn-icon"/> }
                         </div>
                         <div className="camera-text">
                             <span className="camera-infor">CAMERA</span>
@@ -92,39 +124,10 @@ function Door()
                         </label>
                     </button>
                     
+                    
                 </div>
-
-            </div>
-            <div className='Door__right'>
-                <div className='fan__control'>
-                    <div className='fan__control-icon '>
-                        <i class="fan fa-solid fa-fan" style={{ animation: `fan-rotate ${speedFan}s 1s forwards`}}></i>
-                    </div>
-                    <button className="btn-fan btn" style={{ backgroundColor: fanBtn && '#1babfc' }} >
-                        <span className='span1'></span>
-                        <span className='span2'></span>
-                        <span className='span3'></span>
-                        <span className='span4'></span>
-                        <div className="fan-border">
-                            <i className="fan-btn-icon fa-solid fa-fan"></i>
-                        </div>
-                        <div className="fan-text">
-                            <span className="fan-infor">FAN</span>
-                            <span className="fan-connect"> {!fanBtn ?"Not Connected":"Connected"}</span>
-                        </div>
-                        <label class="switch">
-                            <input className="btn-switch" type="checkbox" onClick={clickFan} checked={fanBtn}/>
-                            <span class="slider">
-                                <ul className="switch__select">
-                                    <li className="switch__select-item">Off</li>
-                                    <li className="switch__select-item">On</li>
-                                </ul>
-                            </span>
-                        </label>
-                    </button>
-
-
-                </div>
+            
+              
             </div>
         </div>
     )

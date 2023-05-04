@@ -8,22 +8,28 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Notification from "./pages/Notification";
 import Light from "./pages/Light";
+import User from './pages/User';
+import { useSelector } from "react-redux"
 
 function App() {
-  return (
+    const user = useSelector((state) => state.auth_.login?.currentUser)
+    return (
         <Router>
             <Routes>
                 <Route path="/" element={<Login></Login>} />
                 <Route path="/register" element={<Register></Register>} />
-                <Route element={<DefaultLayout></DefaultLayout>}>
-                    <Route path="/dashboard" element={<Dashboard></Dashboard>} />
-                    <Route path="/door" element={<Door></Door>} />
-                    <Route path="/ledFan" element={<LedFan></LedFan>} />
-                    <Route path="/light" element={<Light></Light>}/>
-                    <Route path="/notification" element={<Notification></Notification>} />
-                    <Route path="/temperHumi" element={<TemperHumi></TemperHumi>} />
-                    {/* <Route path="." element={<></>}></Route> */}
-                </Route>
+                {user && (
+                    <Route element={<DefaultLayout />}>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/door" element={<Door />} />
+                        <Route path="/ledFan" element={<LedFan />} />
+                        <Route path="/light" element={<Light />} />
+                        <Route path="/notification" element={<Notification />} />
+                        <Route path="/temperHumi" element={<TemperHumi />} />
+                        <Route path="/user" element={<User />} />
+                    </Route>
+                )}
+                <Route path="*" element={<div><h1>Error 404: Page not found</h1></div>}></Route>
             </Routes>
         </Router>
     );

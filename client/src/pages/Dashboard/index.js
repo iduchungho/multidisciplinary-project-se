@@ -3,7 +3,7 @@ import axios from "axios";
 import {useSelector} from "react-redux"
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
-import "./Dashboard.scss";
+import "./Dashboard.css";
 
 
 
@@ -62,6 +62,8 @@ function Dashboard()
             .then(response => 
                 {
                     // setHumi(store1.getState().value)
+                    setHumi(response.data)
+                  
                 })
             .catch(error => console.error(error))
             axios 
@@ -69,6 +71,7 @@ function Dashboard()
             .then(response => 
                 {
                     // setTemper(store1.getState().value)
+                    setTemper(response.data)
                 })
             .catch(error => console.error(error))
             axios 
@@ -189,7 +192,7 @@ function Dashboard()
                                 <i className="led-btn-icon fa-solid fa-lightbulb"></i>
                             </div>
                             <div className="led-text">
-                                <span className="led-infor">LIGHT LED</span>
+                                <span className="led-infor">LED</span>
                                 <span className="led-connect"> {!ledBtn ?"Not Connected":"Connected"}</span>
                             </div>
                             <label class="switch">

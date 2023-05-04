@@ -1,6 +1,6 @@
-import {createSlice} from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 
-export const IoTSlice = createSlice ({
+export const IoTSlice = createSlice({
     name: "IoT",
     initialState: {
         temparature: [],
@@ -15,10 +15,10 @@ export const IoTSlice = createSlice ({
             state.error = false;
         },
         updateSuccess: (state, action) => {
-            state.isFetching = false;
             state.temparature = action.payload.temp;
             state.humidity = action.payload.humid;
             state.light = action.payload.light;
+            state.isFetching = false;
         },
         updateFail: (state) => {
             state.isFetching = false;
@@ -26,5 +26,5 @@ export const IoTSlice = createSlice ({
         }
     }
 })
-export const {updateStart, updateSuccess, updateFail} = IoTSlice.actions
+export const { updateStart, updateSuccess, updateFail } = IoTSlice.actions
 export default IoTSlice.reducer

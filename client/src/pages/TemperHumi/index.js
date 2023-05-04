@@ -1,5 +1,7 @@
 import {React,useEffect,useState} from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import TemperatureChart from "../../components/chart/TemperatureChart";
 import "./TemperHumi.css"
 
@@ -22,24 +24,69 @@ function TemperHumi()
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
     const [tempers,setTemper]= useState([]);
     const [humis,setHumi]= useState([]);
+    
     useEffect(()=>{
         setTimeout(()=>{
             axios 
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/humidity/data')
-            .then(response => setHumi(response.data))
+            .then(response => 
+                {
+                    setHumi(response.data)
+                })
             .catch(error => console.error(error))
             axios 
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data')
             .then(response => setTemper(response.data))
             .catch(error => console.error(error))
-        },10000)
+        },5000)
 
     },[tempers]);
     var clockTemper = tempers.length==0 ? 0 : tempers[0].value;
     var clockHumi= humis.length==0 ? 0 : humis[0].value;
-    var colorTemper = clockTemper < 15 || clockTemper > 50 ? "#ff6384" : '#3ecdef';
-    var colorHumi = clockHumi < 20 || clockHumi > 80 ? "#ff6384" : '#3ecdef';
 
+    const showToastTemper = () => {
+        toast.error(' Nhiệt độ vượt quá ngưỡng cho phép!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+    };
+    const showToastHumi = () => {
+        toast.error(' Độ ẩm vượt quá ngưỡng cho phép!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+    };
+
+    let colorTemper = '#3ecdef';
+    if (colorTemper = clockTemper < 15 || clockTemper > 50)
+    {
+        colorTemper ="#ff6384";
+        //setTimeout(()=>showToastTemper(),5000) 
+    }
+    let colorHumi = '#3ecdef';
+    if (colorHumi = clockHumi < 20 || clockHumi > 80)
+    {
+        colorHumi ="#ff6384";
+       
+       // setTimeout(()=> showToastHumi(),5000) 
+    }
+    // var colorTemper = clockTemper < 15 || clockTemper > 50 ? "#ff6384" : '#3ecdef';
+    // var colorHumi = clockHumi < 20 || clockHumi > 80 ? "#ff6384" : '#3ecdef';
+   
+    
+    
     // xử lý dữ liệu đồ thị
     
     var data1 =[]
@@ -53,6 +100,7 @@ function TemperHumi()
         
       }
     }
+
     
     return (
         <div className="temperHumi">
@@ -66,7 +114,7 @@ function TemperHumi()
                
             </div>
             <div className="temperHumi__right">
-                <h2 className='temperHumi__right-heading'>inFormaTion</h2>
+                <h2 className='temperHumi__right-heading'>Clock</h2>
                 <div className='temperHumi__right-clock'>
                     <div className='clock-temperature'>
                     <CircularProgressbar
@@ -88,22 +136,6 @@ function TemperHumi()
                           })}
                     />
                   
-
-                    {/* <div>
-                        <svg className="waves" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
-                        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-                        <defs>
-                        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-                        </defs>
-                        <g class="parallax">
-                        <use xlinkHref="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-                        <use xlinkHref="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-                        <use xlinkHref="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-                        <use xlinkHref="#gentle-wave" x="48" y="7" fill="#fff" />
-                        </g>
-                        </svg>
-                    </div> */}
-
                     </div>
                     <div className='clock-humidity'>
                     <CircularProgressbar
@@ -122,7 +154,19 @@ function TemperHumi()
                     />
                     </div>
                 </div>
-                
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                    />
+                    {/* Same as */}
             </div>
         </div>
     )
