@@ -6,7 +6,7 @@ from faceAI import faceAI
 
 AIO_FEED_ID = ["btnled","btndoor","btnfan"]
 AIO_USERNAME = "smartHomeIOT1"
-AIO_KEY = "aio_MuXh368iRh9TKmRIEVCOnLsymw1L"
+AIO_KEY = "aio_OOuG67nXdPK96XlxSJACUqCDg22T"
 
 
 def connected(client):
@@ -49,7 +49,7 @@ while True:
         time.sleep(5)
         print("Publish light")
         client.publish("light",random.randint(0,500))
-        count=10
+        count=5
     count-=1
     time.sleep(1)
 
