@@ -11,10 +11,6 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-import {update} from "../../redux/apiRequest"
-import LightChart from "../../components/chart/LightChart"
-import "./Light.css"
-
 
 
 
