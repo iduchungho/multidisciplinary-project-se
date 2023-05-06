@@ -4,7 +4,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux"
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
-import { updatetemperhumid } from '../../redux/apiRequest';
+import { updatetemperhumid, putmessage } from '../../redux/apiRequest';
 
 import "./Dashboard.css";
 import 'react-toastify/dist/ReactToastify.css';
@@ -34,17 +34,6 @@ const showToastHumi = () => {
     });
 };
 // const store1 = new UpdateDataStore(dispatcher);
-async function errorTemper(temper) {
-    if (temper < 15 || temper > 50) {
-        showToastTemper()
-    }
-}
-
-async function errorHumi(humi) {
-
-    if (humi < 20 || humi > 80)
-        showToastHumi()
-}
 function Dashboard() {
 
     const dispatch = useDispatch()
@@ -52,20 +41,52 @@ function Dashboard() {
     const user = useSelector((state) => state.auth_.login?.currentUser)
     console.log(user)
     const [ledBtn, setLed] = useState(0);
-    const clickLed = () => {
+    const clickLed = async () => {
         setLed(!ledBtn);
+        let message = {
+            content: "",
+            type: "1"
+        }
+        if (ledBtn == 0) {
+            message.content = "Tắt đèn"
+        }
+        else {
+            message.content = "Bật đèn"
+        }
+        await putmessage(message, user.data.id)
     }
 
     // công tắc đèn fan
     const [fanBtn, setFan] = useState(0);
-    const clickFan = () => {
+    const clickFan = async () => {
         setFan(!fanBtn);
+        let message = {
+            content: "",
+            type: "1"
+        }
+        if (fanBtn == 0) {
+            message.content = "Tắt quạt"
+        }
+        else {
+            message.content = "Bật quạt"
+        }
+        await putmessage(message, user.data.id)
     }
 
     // công tắc đèn door
     const [doorBtn, setDoor] = useState(0);
     const clickDoor = () => {
         setDoor(!doorBtn);
+        let message = {
+            content: "",
+            type: "1"
+        }
+        if (doorBtn == 0) {
+            message.content = "Đóng cửa"
+        }
+        else {
+            message.content = "Mở cửa"
+        }
     }
 
     // face AI
@@ -73,9 +94,29 @@ function Dashboard() {
     if (face == "Bao\n" && doorBtn == 0) {
         setDoor(!doorBtn)
     }
+    // Kiểm tra quá ngưỡng
+    const errorTemper = async (temper) => {
+        if (temper < 15 || temper > 50) {
+            showToastTemper()
+            let message = {
+                content: "Nhiệt độ quá ngưỡng",
+                type: "3"
+            }
+            await putmessage(message, user.data.id)
+        }
+    }
 
+    const errorHumi = async (humi) => {
 
-
+        if (humi < 20 || humi > 80) {
+            showToastHumi()
+            let message = {
+                content: "Độ ẩm quá ngưỡng",
+                type: "3"
+            }
+            await putmessage(message, user.data.id)
+        }
+    }
     // list các image room 
 
     const listImage = ["https://sbshouse.vn/wp-content/uploads/2021/06/bi%E1%BB%87t-th%E1%BB%B1-2-t%E1%BA%A7ng-%C4%91%E1%BA%B9p-4.jpg",

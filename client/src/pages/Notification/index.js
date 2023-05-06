@@ -14,6 +14,7 @@ function Notification() {
         getmess()
     }, [])
     console.log("Result",mes)
+    mes.reverse()
     return (
         <div className='notification__wrapper'>
             <h1 className="notification__heading">|</h1>

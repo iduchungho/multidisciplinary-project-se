@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { updatelight, getlight } from "../../redux/apiRequest"
+import { updatelight, getlight, putmessage } from "../../redux/apiRequest"
 import LightChart from "../../components/chart/LightChart"
 import "./Light.css"
 import { useSelector, useDispatch } from "react-redux"
@@ -12,39 +12,39 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 
 
-
-
-
-
-
-const showToastLight = () => {
-    toast.error(' Ánh sáng vượt quá ngưỡng cho phép!', {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-    });
-};
-
-
-async function errorLight(light) {
-    if (light.value < 20 || light.value > 400) {
-        showToastLight()
-    }
-}
-
 function Light() {
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
+    const user = useSelector((state) => state.auth_.login?.currentUser)
     const dispatch = useDispatch()
     let getlights = useSelector((state) => state.IoT.light)
     const [lights, setLights] = useState(getlights)
     const [light, setLight] = useState(0);
     const [filter,setFilter]= useState(0);
     const [selectdate, setSelectdate] = useState(new Date());
+    const showToastLight = () => {
+        toast.error(' Ánh sáng vượt quá ngưỡng cho phép!', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    };
+    
+    
+    const errorLight = async (light) => {
+        if (light.value < 20 || light.value > 60) {
+            showToastLight()
+            let message = {
+                content: "Ánh sáng quá ngưỡng",
+                type: "3"
+            }
+            await putmessage(message, user.data.id)
+        }
+    }
     useEffect(() => {
         const intervalId = setInterval(async () => {
             try {

@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import TemperatureChart from "../../components/chart/TemperatureChart";
 import "./TemperHumi.css"
 import { useSelector, useDispatch } from "react-redux"
-import { updatetemperhumid, gettemper, gethumid } from '../../redux/apiRequest';
+import { updatetemperhumid, gettemper, gethumid, putmessage } from '../../redux/apiRequest';
 // Import react-circular-progressbar module and styles
 import {
     CircularProgressbar,
@@ -39,23 +39,9 @@ const showToastHumi = () => {
     });
 };
 
-
-
-
-async function errorTemper(temper) {
-    if (temper < 15 || temper > 50) {
-        showToastTemper()
-    }
-}
-
-async function errorHumi(humi) {
-
-    if (humi < 20 || humi > 80)
-        showToastHumi()
-}
-
 function TemperHumi() {
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
+    const user = useSelector((state) => state.auth_.login?.currentUser)
     const dispatch = useDispatch()
     let gettempers = useSelector((state) => state.IoT.temperature)
     let gethumids = useSelector((state) => state.IoT.humidity)
@@ -98,7 +84,29 @@ function TemperHumi() {
     var colorTemper = clockTemper < 15 || clockTemper > 50 ? "#ff6384" : '#3ecdef';
     var colorHumi = clockHumi < 20 || clockHumi > 80 ? "#ff6384" : '#3ecdef';
 
-
+    // Kiểm tra ngưỡng
+    const errorTemper = async (temper) => {
+        if (temper < 15 || temper > 50) {
+            showToastTemper()
+            let message = {
+                content: "Nhiệt độ quá ngưỡng",
+                type: "3"
+            }
+            await putmessage(message, user.data.id)
+        }
+    }
+    
+    const errorHumi = async (humi) => {
+    
+        if (humi < 20 || humi > 80) {
+            showToastHumi()
+            let message = {
+                content: "Độ ẩm quá ngưỡng",
+                type: "3"
+            }
+            await putmessage(message, user.data.id)
+        }
+    }
     // xử lý dữ liệu đồ thị
 
     var data1 = []
@@ -130,6 +138,7 @@ function TemperHumi() {
         console.log("Result2", newtemper, newhumid)
         console.log("Filter", filter)
     }
+
     return (
         <div className="temperHumi">
             <div className="temperHumi__left">

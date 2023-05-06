@@ -138,7 +138,7 @@ export const changepass = async (changepass, dispatch, id) => {
 }
 export const putmessage = async (message, id) => {
     try {
-        await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/api/action/log?id=${id}`, message, {
+        await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/api/noty/push?id=${id}`, message, {
             withCredentials: true
         })
     } catch (err) {
