@@ -1,6 +1,8 @@
 import axios from "axios"
-import { updatelightStart, updatelightSuccess, updatelightFailed,
-    updatetemperhumidStart, updatetemperhumidSuccess, updatetemperhumidFailed } from "./IoTSlice"
+import {
+    updatelightStart, updatelightSuccess, updatelightFailed,
+    updatetemperhumidStart, updatetemperhumidSuccess, updatetemperhumidFailed
+} from "./IoTSlice"
 import {
     loginFailed, loginStart, loginSuccess, registerStart, registerSuccess, registerFailed, logoutFailed, logoutStart, logoutSuccess,
     changeAvatarStart, changeAvatarSuccess, changeAvatarFailed, changeInforStart, changeInforSuccess, changeInforFailed,
@@ -47,10 +49,11 @@ export const logout = async (dispatch, navigate) => {
 export const updatelight = async (dispatch, date) => {
     dispatch(updatelightStart())
     try {
-        let light = await axios.get("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/light/data", { responseType: 'json' })
+        let light = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/data/stat?type=light&date=${date}`, { responseType: 'json' })
         const res = {
             light: light.data
         }
+        console.log(light)
         dispatch(updatelightSuccess(res))
     }
     catch (err) {
@@ -124,11 +127,10 @@ export const putmessage = async (message, id) => {
 }
 export const getmessage = async (id) => {
     try {
-        let message = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/action/get?id=${id}`, message, {
+        const data = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/noty/get?id=${id}`, {
             withCredentials: true
         })
-        console.log("Message", message)
-        return message
+        return data.data
     } catch (err) {
         console.log(err)
     }

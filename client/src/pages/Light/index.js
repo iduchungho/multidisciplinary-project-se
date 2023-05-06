@@ -1,25 +1,15 @@
 import { React, useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {updatelight} from "../../redux/apiRequest"
+import { updatelight } from "../../redux/apiRequest"
 import LightChart from "../../components/chart/LightChart"
 import "./Light.css"
-import {useSelector, useDispatch} from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import {
     CircularProgressbar,
     buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-
-import {update} from "../../redux/apiRequest"
-import LightChart from "../../components/chart/LightChart"
-import "./Light.css"
-
-
-
-
-
-
 
 const showToastLight = () => {
     toast.error(' Ánh sáng vượt quá ngưỡng cho phép!', {
@@ -31,50 +21,46 @@ const showToastLight = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+    });
 };
 
 
-async function errorLight(lights)
-{
-  
-    var dataLight = lights.length==0 ? 0 : lights[0].value; 
-    if (dataLight < 20 || dataLight > 400)
-    {
+async function errorLight(lights) {
+
+    var dataLight = lights.length == 0 ? 0 : lights[0].value;
+    if (dataLight < 20 || dataLight > 400) {
         showToastLight()
     }
-    
-    
-
 }
-
-
-
 
 function Light() {
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
     const dispatch = useDispatch()
-    let light = useSelector((state)=>state.IoT.light)
+    let light = useSelector((state) => state.IoT.light)
     const [lights, setLight] = useState([]);
     useEffect(() => {
         const intervalId = setInterval(async () => {
-            try
-            {
-                await updatelight(dispatch)
+            try {
+                let date = new Date()
+                let year = date.getFullYear()
+                let month = date.getMonth() + 1
+                let day = date.getDate()
+                let temp = `${year}${month}${day}`
+                console.log("Result", temp)
+                await updatelight(dispatch, temp)
                 await setLight(light)
             }
-            catch(e) {
-               
+            catch (e) {
                 console.log(e)
             }
-            setTimeout(()=>console.log(),10000)
+            setTimeout(() => console.log(), 10000)
             errorLight(lights)
 
-          }, 5000);
-          return () => clearInterval(intervalId);
+        }, 5000);
+        return () => clearInterval(intervalId);
     }, [lights]);
     var clockLight = lights.length == 0 ? 0 : lights[0].value;
-    console.log(clockLight/200*100)
+    // console.log(clockLight/200*100)
     var colorLight = "rgb(236, 241, 50)";
 
     // xử lý dữ liệu đồ thị
@@ -100,7 +86,7 @@ function Light() {
                 <div className='Light__right-clock'>
                     <div className='clock-temperature'>
                         <CircularProgressbar
-                            value={clockLight/500*100}
+                            value={clockLight / 500 * 100}
                             text={`${clockLight}%`}
                             strokeWidth={8}
                             styles={buildStyles({
@@ -113,16 +99,16 @@ function Light() {
                         />
                     </div>
                     <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
                     />
                 </div>
             </div>
