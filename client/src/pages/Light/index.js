@@ -11,6 +11,16 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
+import {update} from "../../redux/apiRequest"
+import LightChart from "../../components/chart/LightChart"
+import "./Light.css"
+
+
+
+
+
+
+
 const showToastLight = () => {
     toast.error(' Ánh sáng vượt quá ngưỡng cho phép!', {
         position: "top-right",
@@ -110,6 +120,16 @@ function Light() {
                         pauseOnHover
                         theme="light"
                     />
+                    
+        
+                </div>
+                <div className='filter'>
+
+                    <input className='filter__input' type="date" />
+                    <button className='filter__btn'>
+                        <i className="filter__icon fa-solid fa-filter"></i>
+                    </button>
+
                 </div>
             </div>
         </div>

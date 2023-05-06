@@ -34,19 +34,18 @@ func SensorDataStat(sens model.SensorData) (interface{}, error) {
 	timeHour := time.Now().Hour()
 	index := len(sens.Payload) - 1
 
-	for i := 0; i <= timeHour; i++ {
-		if index >= 0 {
-			data.Payload[i].Id = sens.Payload[index].Id
-			data.Payload[i].Value = sens.Payload[index].Value
-			value, _ := strconv.Atoi(sens.Payload[index].Value)
-			valueMax, _ := strconv.Atoi(data.ValueMax)
-			if valueMax <= value {
-				data.ValueMax = sens.Payload[index].Value
-			}
-			index = index - 2
-		} else {
+	for i := 0; i < timeHour; i++ {
+		if index < 0 {
 			index = 0
 		}
+		data.Payload[i].Id = sens.Payload[index].Id
+		data.Payload[i].Value = sens.Payload[index].Value
+		value, _ := strconv.Atoi(sens.Payload[index].Value)
+		valueMax, _ := strconv.Atoi(data.ValueMax)
+		if valueMax <= value {
+			data.ValueMax = sens.Payload[index].Value
+		}
+		index = index - 2
 	}
 	return data, nil
 }

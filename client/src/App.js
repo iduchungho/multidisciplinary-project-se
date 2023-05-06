@@ -18,7 +18,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Login></Login>} />
                 <Route path="/register" element={<Register></Register>} />
-                {/* {user && ( */}
+                {user && (
                     <Route element={<DefaultLayout />}>
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/door" element={<Door />} />
@@ -27,7 +27,7 @@ function App() {
                         <Route path="/notification" element={<Notification />} />
                         <Route path="/temperHumi" element={<TemperHumi />} />
                         <Route path="/user" element={<User />} />
-                    </Route>
+                    </Route> )}
                 
                 <Route path="*" element={<div><h1>Error 404: Page not found</h1></div>}></Route>
             </Routes>
