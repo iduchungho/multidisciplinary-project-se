@@ -49,7 +49,7 @@ while True:
         # client.publish("ai",faceAI())
         time.sleep(5)
         print("Publish temperature")
-        client.publish("temperature", random.randint(0, 100))
+        client.publish("temperature", random.randint(28, 38))
         time.sleep(5)
         print("Publish humidity")
         client.publish("humidity", random.randint(0, 100))
@@ -59,4 +59,3 @@ while True:
         count = 10
     count -= 1
     time.sleep(1)
-

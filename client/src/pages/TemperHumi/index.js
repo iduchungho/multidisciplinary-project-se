@@ -13,11 +13,60 @@ import {
     buildStyles
  
   } from "react-circular-progressbar";
-  import "react-circular-progressbar/dist/styles.css";
+import "react-circular-progressbar/dist/styles.css";
+
+
+const showToastTemper = () => {
+    toast.error('Nhiệt độ vượt quá ngưỡng cho phép!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+};
+const showToastHumi = () => {
+    toast.error(' Độ ẩm vượt quá ngưỡng cho phép!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+};
+
+
+
+
+async function errorTemper(tempers)
+{
+  
+    var dataTemper = tempers.length==0 ? 0 : tempers[0].value; 
+    if (dataTemper < 15 || dataTemper > 50)
+    {
+        showToastTemper()
+    }
+    
+    
+
+}
+
+async function errorHumi(humis)
+{
+   
+    var dataHumi= humis.length==0 ? 0 : humis[0].value;
+    if (dataHumi < 20 || dataHumi > 80)
+    showToastHumi()
   
 
 
-
+}
 
 function TemperHumi()
 {
@@ -32,61 +81,36 @@ function TemperHumi()
             .then(response => 
                 {
                     setHumi(response.data)
+                   
+                    
                 })
             .catch(error => console.error(error))
             axios 
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data')
-            .then(response => setTemper(response.data))
+            .then(response =>{
+                setTemper(response.data)
+            })
             .catch(error => console.error(error))
+
+          
+           
         },5000)
 
+        setTimeout(()=>console.log(),10000)
+        errorTemper(tempers)
+        setTimeout(()=>console.log(),10000)
+        errorHumi(humis)
+
     },[tempers]);
+
+
     var clockTemper = tempers.length==0 ? 0 : tempers[0].value;
     var clockHumi= humis.length==0 ? 0 : humis[0].value;
 
-    const showToastTemper = () => {
-        toast.error(' Nhiệt độ vượt quá ngưỡng cho phép!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            });
-    };
-    const showToastHumi = () => {
-        toast.error(' Độ ẩm vượt quá ngưỡng cho phép!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            });
-    };
+    var colorTemper = clockTemper < 15 || clockTemper > 50 ? "#ff6384" : '#3ecdef';
+    var colorHumi = clockHumi < 20 || clockHumi > 80 ? "#ff6384" : '#3ecdef';
 
-    let colorTemper = '#3ecdef';
-    if (colorTemper = clockTemper < 15 || clockTemper > 50)
-    {
-        colorTemper ="#ff6384";
-        //setTimeout(()=>showToastTemper(),5000) 
-    }
-    let colorHumi = '#3ecdef';
-    if (colorHumi = clockHumi < 20 || clockHumi > 80)
-    {
-        colorHumi ="#ff6384";
-       
-       // setTimeout(()=> showToastHumi(),5000) 
-    }
-    // var colorTemper = clockTemper < 15 || clockTemper > 50 ? "#ff6384" : '#3ecdef';
-    // var colorHumi = clockHumi < 20 || clockHumi > 80 ? "#ff6384" : '#3ecdef';
-   
-    
-    
+  
     // xử lý dữ liệu đồ thị
     
     var data1 =[]
@@ -124,10 +148,6 @@ function TemperHumi()
                         styles={buildStyles({
                             
                             pathColor: colorTemper,
-                            // {
-                            //     if (clockTemper < 15 || clockTemper > 50)  "#ff6384"
-                            //     else '#3ecdef'
-                            // } ,//`rgba(62, 205, 239, ${percentage * 100})`,
                             textColor: '#f4f3f5',
                             textSize:'25px',
                             trailColor: '#19203b',
@@ -137,8 +157,9 @@ function TemperHumi()
                     />
                   
                     </div>
-                    <div className='clock-humidity'>
+                    <div className='clock-humidity' >
                     <CircularProgressbar
+                    
                         value={clockHumi}
                         text={`${clockHumi}%`}
                         strokeWidth={8}

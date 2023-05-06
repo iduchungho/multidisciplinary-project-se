@@ -1,4 +1,6 @@
 import { React, useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {updatelight} from "../../redux/apiRequest"
 import LightChart from "../../components/chart/LightChart"
 import "./Light.css"
@@ -8,6 +10,47 @@ import {
     buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+
+import {update} from "../../redux/apiRequest"
+import LightChart from "../../components/chart/LightChart"
+import "./Light.css"
+
+
+
+
+
+
+
+const showToastLight = () => {
+    toast.error(' Ánh sáng vượt quá ngưỡng cho phép!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+};
+
+
+async function errorLight(lights)
+{
+  
+    var dataLight = lights.length==0 ? 0 : lights[0].value; 
+    if (dataLight < 20 || dataLight > 400)
+    {
+        showToastLight()
+    }
+    
+    
+
+}
+
+
+
+
 function Light() {
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
     const dispatch = useDispatch()
@@ -19,16 +62,19 @@ function Light() {
             {
                 await updatelight(dispatch)
                 await setLight(light)
-                console.log("Light 1", light)
             }
             catch(e) {
-                console.log("Light 2", light)
+               
                 console.log(e)
             }
+            setTimeout(()=>console.log(),10000)
+            errorLight(lights)
+
           }, 5000);
           return () => clearInterval(intervalId);
-    }, []);
+    }, [lights]);
     var clockLight = lights.length == 0 ? 0 : lights[0].value;
+    console.log(clockLight/200*100)
     var colorLight = "rgb(236, 241, 50)";
 
     // xử lý dữ liệu đồ thị
@@ -54,7 +100,7 @@ function Light() {
                 <div className='Light__right-clock'>
                     <div className='clock-temperature'>
                         <CircularProgressbar
-                            value={clockLight}
+                            value={clockLight/500*100}
                             text={`${clockLight}%`}
                             strokeWidth={8}
                             styles={buildStyles({
@@ -66,6 +112,18 @@ function Light() {
                             })}
                         />
                     </div>
+                    <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                    />
                 </div>
             </div>
         </div>
