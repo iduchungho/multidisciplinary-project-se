@@ -2,6 +2,7 @@ import {React, useState, useEffect} from 'react';
 import {useSelector} from "react-redux";
 import WebcamCapture from "../../components/chart/WebcamCapture";
 import { putmessage } from '../../redux/apiRequest';
+import { cameraBtn, setCamera } from '../../redux/cameraAI';
 import noVideo from "../../assets/noVideo.png";
 
 
@@ -59,7 +60,7 @@ function Door()
     if (fanBtn === 0) speedFan=1;
     else speedFan= 10;
 
-    const [cameraBtn, setCamera]=useState(0);
+    // const [cameraBtn, setCamera]=useState(0);
     const clickCamera= async()=>{
         setCamera(!cameraBtn);
 
@@ -148,7 +149,7 @@ function Door()
                     </div>
                 </div>
                 <div className='door__control'>
-                    <button className="btn-fan btn" style={{ backgroundColor: fanBtn && '#1babfc' }} >
+                    <button className="btn-fan1 btn" style={{ backgroundColor: fanBtn && '#1babfc' }} >
                         <span className='span1'></span>
                         <span className='span2'></span>
                         <span className='span3'></span>

@@ -63,6 +63,7 @@ export const updatelight = async (dispatch, date) => {
         dispatch(updatelightFailed())
     }
 }
+
 export const updatetemperhumid = async (dispatch, date) => {
     dispatch(updatetemperhumidStart())
     try {

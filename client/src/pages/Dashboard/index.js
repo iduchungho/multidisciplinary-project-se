@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
 import { updatetemperhumid, putmessage } from '../../redux/apiRequest';
+import { cameraBtn, setCamera } from '../../redux/cameraAI';
 
 import "./Dashboard.css";
 import 'react-toastify/dist/ReactToastify.css';
