@@ -43,51 +43,52 @@ function Dashboard() {
     console.log(user)
     const [ledBtn, setLed] = useState(0);
     const clickLed = async () => {
-        setLed(!ledBtn);
         let message = {
             content: "",
             type: "1"
         }
         if (ledBtn == 0) {
-            message.content = "Tắt đèn"
-        }
-        else {
             message.content = "Bật đèn"
         }
+        else {
+            message.content = "Tắt đèn"
+        }
         await putmessage(message, user.data.id)
+        setLed(!ledBtn);
     }
 
     // công tắc đèn fan
     const [fanBtn, setFan] = useState(0);
     const clickFan = async () => {
-        setFan(!fanBtn);
         let message = {
             content: "",
             type: "1"
         }
         if (fanBtn == 0) {
-            message.content = "Tắt quạt"
-        }
-        else {
             message.content = "Bật quạt"
         }
+        else {
+            message.content = "Tắt quạt"
+        }
         await putmessage(message, user.data.id)
+        setFan(!fanBtn);
     }
 
     // công tắc đèn door
     const [doorBtn, setDoor] = useState(0);
-    const clickDoor = () => {
-        setDoor(!doorBtn);
+    const clickDoor = async () => {
         let message = {
             content: "",
             type: "1"
         }
         if (doorBtn == 0) {
-            message.content = "Đóng cửa"
-        }
-        else {
             message.content = "Mở cửa"
         }
+        else {
+            message.content = "Đóng cửa"
+        }
+        await putmessage(message, user.data.id)
+        setDoor(!doorBtn);
     }
 
     // face AI
@@ -96,7 +97,7 @@ function Dashboard() {
         setDoor(!doorBtn)
     }
     // Kiểm tra quá ngưỡng
-    async function errorTemper (temper) {
+    async function errorTemper(temper) {
         console.log(temper)
         if (temper < 15 || temper > 50) {
             showToastTemper()

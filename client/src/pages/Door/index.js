@@ -13,7 +13,6 @@ function Door()
 {
 
     const user = useSelector((state) => state.auth_.login?.currentUser)
-
     const [doorBtn, setDoor]=useState(0);
     const clickDoor = async()=> {
         setDoor(!doorBtn);

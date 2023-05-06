@@ -197,3 +197,16 @@ export const gethumid = async (date) => {
     }
 }
 
+export const updateai = async (dispatch, date) => {
+    try {
+        let ai = await axios.get(`https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/ai/data`, {
+            responseType: 'json',
+            withCredentials: true
+        })
+        const res = ai[0].value
+        return res
+    }
+    catch (err) {
+        
+    }
+}
