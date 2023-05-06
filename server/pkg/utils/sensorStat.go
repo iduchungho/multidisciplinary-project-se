@@ -24,7 +24,7 @@ func SensorDataStat(sens model.SensorData) (interface{}, error) {
 	data.Payload = make([]payload, 24)
 	for i := range data.Payload {
 		data.Payload[i].Id = "none"
-		data.Payload[i].Value = "none"
+		data.Payload[i].Value = "0"
 	}
 	data.Type = sens.Type
 	data.ValueMax = "0"
