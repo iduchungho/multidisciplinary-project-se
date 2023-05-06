@@ -49,12 +49,15 @@ export const logout = async (dispatch, navigate) => {
 export const updatelight = async (dispatch, date) => {
     dispatch(updatelightStart())
     try {
-        let light = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/data/stat?type=light&date=${date}`, { responseType: 'json' })
+        let light = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/data/stat?type=light&date=${date}`, {
+            responseType: 'json',
+            withCredentials: true
+        })
         const res = {
-            light: light.data
+            light: light.data.message.payload
         }
-        console.log(light)
         dispatch(updatelightSuccess(res))
+        return light.data.message.latest
     }
     catch (err) {
         dispatch(updatelightFailed())
@@ -63,16 +66,33 @@ export const updatelight = async (dispatch, date) => {
 export const updatetemperhumid = async (dispatch, date) => {
     dispatch(updatetemperhumidStart())
     try {
-        let humid = await axios.get("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/humidity/data", { responseType: 'json' })
-        let temp = await axios.get("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data", { responseType: 'json' })
+        let temp = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/data/stat?type=temp&date=${date}`, {
+            responseType: 'json',
+            withCredentials: true
+        })
+        let humid = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/data/stat?type=humid&date=${date}`, {
+            responseType: 'json',
+            withCredentials: true
+        })
         const res = {
-            humid: humid.data,
-            temp: temp.data,
+            humid: humid.data.message.payload,
+            temp: temp.data.message.payload,
         }
         dispatch(updatetemperhumidSuccess(res))
+        const result = {
+            temp: temp.data.message.latest.value,
+            humid: humid.data.message.latest.value
+        }
+        return result
     }
     catch (err) {
         dispatch(updatetemperhumidFailed())
+        console.log("Failed", err)
+        const result = {
+            temp: [],
+            humid: []
+        }
+        return result
     }
 }
 export const changeavatar = async (new_avatar, dispatch, id) => {
@@ -135,3 +155,44 @@ export const getmessage = async (id) => {
         console.log(err)
     }
 }
+
+export const getlight = async (date) => {
+    try {
+        let light = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/data/stat?type=light&date=${date}`, {
+            responseType: 'json',
+            withCredentials: true
+        })
+        return light.data.message.payload
+    }
+    catch (err) {
+        console.log(err)
+        return []
+    }
+}
+export const gettemper = async (date) => {
+    try {
+        let temper = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/data/stat?type=temp&date=${date}`, {
+            responseType: 'json',
+            withCredentials: true
+        })
+        return temper.data.message.payload
+    }
+    catch (err) {
+        console.log(err)
+        return []
+    }
+}
+export const gethumid = async (date) => {
+    try {
+        let humid = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/data/stat?type=humid&date=${date}`, {
+            responseType: 'json',
+            withCredentials: true
+        })
+        return humid.data.message.payload
+    }
+    catch (err) {
+        console.log(err)
+        return []
+    }
+}
+

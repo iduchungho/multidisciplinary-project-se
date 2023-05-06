@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 export const IoTSlice = createSlice({
     name: "IoT",
     initialState: {
-        temparature: [],
+        temperature: [],
         humidity: [],
         light: [],
         isFetching: false,
@@ -27,7 +27,7 @@ export const IoTSlice = createSlice({
             state.error = false;
         },
         updatetemperhumidSuccess: (state, action) => {
-            state.temparature = action.payload.temp;
+            state.temperature = action.payload.temp;
             state.humidity = action.payload.humid;
             state.isFetching = false;
         },
