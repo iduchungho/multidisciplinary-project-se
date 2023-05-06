@@ -95,7 +95,8 @@ function Dashboard() {
         setDoor(!doorBtn)
     }
     // Kiểm tra quá ngưỡng
-    const errorTemper = async (temper) => {
+    async function errorTemper (temper) {
+        console.log(temper)
         if (temper < 15 || temper > 50) {
             showToastTemper()
             let message = {
@@ -106,8 +107,8 @@ function Dashboard() {
         }
     }
 
-    const errorHumi = async (humi) => {
-
+    async function errorHumi(humi) {
+        console.log(humi)
         if (humi < 20 || humi > 80) {
             showToastHumi()
             let message = {
@@ -142,8 +143,8 @@ function Dashboard() {
                 let latest = await updatetemperhumid(dispatch, temp)
                 setTemper(latest.temp)
                 setHumi(latest.humid)
-                await errorTemper(tempers)
-                await errorHumi(humis)
+                await errorTemper(latest.temp)
+                await errorHumi(latest.humid)
                 console.log("RUN")
             }
             catch (e) {
