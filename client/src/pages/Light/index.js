@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import {update} from "../../redux/apiRequest"
+import {updatelight} from "../../redux/apiRequest"
 import LightChart from "../../components/chart/LightChart"
 import "./Light.css"
 import {useSelector, useDispatch} from "react-redux"
@@ -17,7 +17,7 @@ function Light() {
         const intervalId = setInterval(async () => {
             try
             {
-                await update(dispatch)
+                await updatelight(dispatch)
                 await setLight(light)
                 console.log("Light 1", light)
             }
