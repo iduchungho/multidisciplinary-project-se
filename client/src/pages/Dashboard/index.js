@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react";
 import axios from "axios";
-import {useSelector} from "react-redux"
+import {useSelector} from "react-redux";
+import { putmessage } from "../../redux/apiRequest";
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
 import "./Dashboard.css";
@@ -12,24 +13,73 @@ function Dashboard()
 {
 
 
-    // công tắc đèn led
     const user = useSelector((state) => state.auth_.login?.currentUser)
-    console.log(user)
+    // công tắc đèn led
+   
     const [ledBtn, setLed]=useState(0);
-    const clickLed= ()=>{
+    const clickLed= async ()=>{
         setLed(!ledBtn);
+        if (ledBtn == 0) 
+        {
+            let message = {
+                content: "Tắt đèn",
+                type: "1"
+            }
+            await putmessage(message,user.data.id)
+        }
+        else if (ledBtn == 1)
+        {
+            let message = {
+                content: "Bật đèn",
+                type: "1"
+            }
+            await putmessage(message,user.data.id)
+        }
     }
     
     // công tắc đèn fan
     const [fanBtn, setFan]=useState(0);
-    const clickFan= ()=>{
+    const clickFan= async()=>{
          setFan(!fanBtn);
+         if (fanBtn == 0) 
+         {
+             let message = {
+                 content: "Tắt quạt",
+                 type: "1"
+             }
+             await putmessage(message,user.data.id)
+         }
+         else if (fanBtn == 1)
+         {
+             let message = {
+                 content: "Bật quạt",
+                 type: "1"
+             }
+             await putmessage(message,user.data.id)
+         }
+
     }
 
     // công tắc đèn door
     const [doorBtn, setDoor]=useState(0);
-    const clickDoor=()=>{
+    const clickDoor = async()=> {
         setDoor(!doorBtn);
+        if (doorBtn == 0) 
+        {
+            let message = {
+                content: "Đóng cửa",
+                type: "1"
+            }
+            await putmessage(message,user.data.id)
+        }
+        else if (doorBtn == 1)
+        {
+            let message = {
+                content: "Mở cửa",
+                type: "1"
+            }
+            await putmessage(message,user.data.id)
+        }
     }
 
     // face AI
@@ -61,7 +111,6 @@ function Dashboard()
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/humidity/data')
             .then(response => 
                 {
-                    // setHumi(store1.getState().value)
                     setHumi(response.data)
                   
                 })
@@ -70,7 +119,6 @@ function Dashboard()
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data')
             .then(response => 
                 {
-                    // setTemper(store1.getState().value)
                     setTemper(response.data)
                 })
             .catch(error => console.error(error))
@@ -78,9 +126,6 @@ function Dashboard()
             .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/ai/data')
             .then(response => setFace(response.data[0].value))
             .catch(error => console.error(error))
-
-
-            
 
         },3000)
 
@@ -95,10 +140,10 @@ function Dashboard()
         if (ledBtn) data.value = 1;
        
         
-        fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnled/data", {
+        fetch( `${process.env.REACT_APP_API_LED}`, {
         method: 'POST',
         headers: {
-            'X-AIO-Key': "aio_lHvG50bcjFwLBxfU8OF3O55Q1LRd",
+            'X-AIO-Key': `${process.env.REACT_APP_X_AIO_Key}` ,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -113,10 +158,10 @@ function Dashboard()
         if (fanBtn) data.value = 1;
        
         
-        fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnfan/data", {
+        fetch(`${process.env.REACT_APP_API_FAN}`, {
         method: 'POST',
         headers: {
-            'X-AIO-Key': "aio_lHvG50bcjFwLBxfU8OF3O55Q1LRd",
+            'X-AIO-Key': `${process.env.REACT_APP_X_AIO_Key}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -131,10 +176,10 @@ function Dashboard()
         if (doorBtn) data.value = 1;
        
         
-        fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btndoor/data", {
+        fetch( `${process.env.REACT_APP_API_DOOR}`, {
         method: 'POST',
         headers: {
-            'X-AIO-Key': "aio_lHvG50bcjFwLBxfU8OF3O55Q1LRd",
+            'X-AIO-Key': `${process.env.REACT_APP_X_AIO_Key}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -271,10 +316,6 @@ function Dashboard()
                     }%</h3>
                     <img src={water} className="temper__scene"/>
                 </div>
-
-
-
-             
                
             </div>
         </div>

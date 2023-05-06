@@ -1,5 +1,7 @@
 import {React, useState, useEffect} from 'react';
+import {useSelector} from "react-redux";
 import WebcamCapture from "../../components/chart/WebcamCapture";
+import { putmessage } from '../../redux/apiRequest';
 import noVideo from "../../assets/noVideo.png";
 
 
@@ -8,24 +10,114 @@ import "./Door.css";
 
 function Door()
 {
+
+    const user = useSelector((state) => state.auth_.login?.currentUser)
+
     const [doorBtn, setDoor]=useState(0);
-    const clickDoor=()=>{
+    const clickDoor = async()=> {
         setDoor(!doorBtn);
+        if (doorBtn == 0) 
+        {
+            let message = {
+                content: "Đóng cửa",
+                type: "1"
+            }
+            await putmessage(message,user.data.id)
+        }
+        else if (doorBtn == 1)
+        {
+            let message = {
+                content: "Mở cửa",
+                type: "1"
+            }
+            await putmessage(message,user.data.id)
+        }
     }
 
     var speedFan= 120;
     const [fanBtn, setFan]=useState(0);
-    const clickFan=()=>{
-        setFan(!fanBtn);
-    }
+    const clickFan= async()=>{
+         setFan(!fanBtn);
+         if (fanBtn == 0) 
+         {
+             let message = {
+                 content: "Tắt quạt",
+                 type: "1"
+             }
+             await putmessage(message,user.data.id)
+         }
+         else if (fanBtn == 1)
+         {
+             let message = {
+                 content: "Bật quạt",
+                 type: "1"
+             }
+             await putmessage(message,user.data.id)
+         }
 
+    }
     if (fanBtn === 0) speedFan=1;
     else speedFan= 10;
 
     const [cameraBtn, setCamera]=useState(0);
-    const clickCamera=()=>{
+    const clickCamera= async()=>{
         setCamera(!cameraBtn);
+
+        if (cameraBtn == 0) 
+         {
+             let message = {
+                 content: "Tắt Camera",
+                 type: "1"
+             }
+             await putmessage(message,user.data.id)
+         }
+         else if (cameraBtn == 1)
+         {
+             let message = {
+                 content: "Bật quạt",
+                 type: "1"
+             }
+             await putmessage(message,user.data.id)
+         }
+
     }
+
+
+    useEffect(()=>{
+       
+        var data = { value: 0 };  
+        if (fanBtn) data.value = 1;
+       
+        
+        fetch(`${process.env.REACT_APP_API_FAN}`, {
+        method: 'POST',
+        headers: {
+            'X-AIO-Key': `${process.env.REACT_APP_X_AIO_Key}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then(response => console.log(response.status))
+        .catch(error => console.error(error));
+    },[fanBtn])
+
+    useEffect(()=>{
+       
+        var data = { value: 0 };  
+        if (doorBtn) data.value = 1;
+       
+        
+        fetch( `${process.env.REACT_APP_API_DOOR}`, {
+        method: 'POST',
+        headers: {
+            'X-AIO-Key': `${process.env.REACT_APP_X_AIO_Key}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then(response => console.log(response.status))
+        .catch(error => console.error(error));
+    },[doorBtn])
 
 
     return(

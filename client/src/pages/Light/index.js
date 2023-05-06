@@ -1,26 +1,29 @@
 import { React, useEffect, useState } from 'react';
+import {useSelector, useDispatch} from "react-redux";
+import { putmessage } from "../../redux/apiRequest";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import {updatelight} from "../../redux/apiRequest"
 import LightChart from "../../components/chart/LightChart"
-import "./Light.css"
-import {useSelector, useDispatch} from "react-redux"
 import {
     CircularProgressbar,
     buildStyles
 } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 
-import {update} from "../../redux/apiRequest"
-import LightChart from "../../components/chart/LightChart"
+
+
+import "react-circular-progressbar/dist/styles.css";
+import 'react-toastify/dist/ReactToastify.css';
 import "./Light.css"
+
+
+
 
 
 
 
 
 const showToastLight = () => {
-    toast.error(' Ánh sáng vượt quá ngưỡng cho phép!', {
+    toast.error(' Độ sáng vượt quá ngưỡng cho phép!', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -33,23 +36,39 @@ const showToastLight = () => {
 };
 
 
-async function errorLight(lights)
+async function errorLight(lights,id)
 {
   
     var dataLight = lights.length==0 ? 0 : lights[0].value; 
     if (dataLight < 20 || dataLight > 400)
     {
         showToastLight()
+        let message ={
+            content:"độ sáng vượt quá ngưỡng cho phép !",
+            type:"3"
+        }
+        putmessage(message,id)
     }
     
     
 
 }
 
-
+function putMessageFilter(id)
+{
+    let message = {
+        content: "filter",
+        type: "1"
+    }
+    putmessage(message,id)
+}
 
 
 function Light() {
+
+
+    const user = useSelector((state) => state.auth_.login?.currentUser)
+
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
     const dispatch = useDispatch()
     let light = useSelector((state)=>state.IoT.light)
@@ -66,7 +85,7 @@ function Light() {
                 console.log(e)
             }
             setTimeout(()=>console.log(),10000)
-            errorLight(lights)
+            errorLight(lights, user.data.id)
 
           }, 5000);
           return () => clearInterval(intervalId);
@@ -128,7 +147,7 @@ function Light() {
                 <div className='filter'>
 
                     <input className='filter__input' type="date" />
-                    <button className='filter__btn'>
+                    <button className='filter__btn' onClick={putMessageFilter}>
                         <i className="filter__icon fa-solid fa-filter"></i>
                     </button>
 

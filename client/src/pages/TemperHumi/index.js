@@ -1,6 +1,8 @@
 import {React,useEffect,useState} from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import {useSelector} from "react-redux";
+import { putmessage } from "../../redux/apiRequest";
 import 'react-toastify/dist/ReactToastify.css';
 import TemperatureChart from "../../components/chart/TemperatureChart";
 import "./TemperHumi.css"
@@ -44,32 +46,59 @@ const showToastHumi = () => {
 
 
 
-async function errorTemper(tempers)
+async function errorTemper(tempers,id)
 {
   
     var dataTemper = tempers.length==0 ? 0 : tempers[0].value; 
     if (dataTemper < 15 || dataTemper > 50)
     {
         showToastTemper()
+        let message ={
+            content:"nhiệt độ vượt quá ngưỡng cho phép !",
+            type:"3"
+        }
+        putmessage(message,id)
     }
     
     
 
 }
 
-async function errorHumi(humis)
+async function errorHumi(humis,id)
 {
    
     var dataHumi= humis.length==0 ? 0 : humis[0].value;
     if (dataHumi < 20 || dataHumi > 80)
-    showToastHumi()
+    {
+        showToastHumi()
+        let message ={
+            content:"độ ẩm vượt quá ngưỡng cho phép !",
+            type:"3"
+        }
+        putmessage(message,id)
+    }
+   
   
 
 
 }
 
+
+function putMessageFilter(id)
+{
+    let message = {
+        content: "filter",
+        type: "1"
+    }
+    putmessage(message,id)
+}
+
 function TemperHumi()
 {
+
+
+    const user = useSelector((state) => state.auth_.login?.currentUser)
+
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
     const [tempers,setTemper]= useState([]);
     const [humis,setHumi]= useState([]);
@@ -94,13 +123,13 @@ function TemperHumi()
 
           
            
-        },5000)
+        },3000)
 
-        setTimeout(()=>console.log(),10000)
-        errorTemper(tempers)
+        setTimeout(async()=> await console.log(),10000)
+        errorTemper(tempers,user.data.id)
 
-        setTimeout(()=>console.log(),10000)
-        errorHumi(humis)
+        setTimeout(async()=>await console.log(),10000)
+        errorHumi(humis, user.data.id)
 
     },[tempers]);
 
@@ -193,7 +222,7 @@ function TemperHumi()
                 <div className='filter'>
                     {/* <h2 className='filter'>Filter </h2> */}
                     <input className='filter__input' type="date" />
-                    <button className='filter__btn'>
+                    <button className='filter__btn' onClick={putmessage(user.data.id)}>
                         <i className="filter__icon fa-solid fa-filter"></i>
                     </button>
                    
