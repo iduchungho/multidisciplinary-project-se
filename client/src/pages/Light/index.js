@@ -1,64 +1,50 @@
 import { React, useEffect, useState } from 'react';
-import {useSelector, useDispatch} from "react-redux";
-import { putmessage } from "../../redux/apiRequest";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {updatelight} from "../../redux/apiRequest"
+import { updatelight, getlight, putmessage } from "../../redux/apiRequest"
 import LightChart from "../../components/chart/LightChart"
 import "./Light.css"
-import {useSelector, useDispatch} from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import {
     CircularProgressbar,
     buildStyles
 } from "react-circular-progressbar";
-
-
-
 import "react-circular-progressbar/dist/styles.css";
-
-import {update} from "../../redux/apiRequest"
-import LightChart from "../../components/chart/LightChart"
-import "./Light.css"
-
-
-
-
-
-const showToastLight = () => {
-    toast.error(' Ánh sáng vượt quá ngưỡng cho phép!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
-};
-
-
-async function errorLight(lights)
-{
-  
-    var dataLight = lights.length==0 ? 0 : lights[0].value; 
-    if (dataLight < 20 || dataLight > 400)
-    {
-        showToastLight()
-    }
-    
-    
-
-}
-
-
 
 
 function Light() {
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
+    const user = useSelector((state) => state.auth_.login?.currentUser)
     const dispatch = useDispatch()
-    let light = useSelector((state)=>state.IoT.light)
-    const [lights, setLight] = useState([]);
+    let getlights = useSelector((state) => state.IoT.light)
+    const [lights, setLights] = useState(getlights)
+    const [light, setLight] = useState(0);
+    const [filter,setFilter]= useState(0);
+    const [selectdate, setSelectdate] = useState(new Date());
+    const showToastLight = () => {
+        toast.error(' Ánh sáng vượt quá ngưỡng cho phép!', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    };
+    
+    
+    const errorLight = async (light) => {
+        if (light.value < 20 || light.value > 60) {
+            showToastLight()
+            let message = {
+                content: "Ánh sáng quá ngưỡng",
+                type: "3"
+            }
+            await putmessage(message, user.data.id)
+        }
+    }
     useEffect(() => {
         const intervalId = setInterval(async () => {
             try {
@@ -79,11 +65,8 @@ function Light() {
             catch (e) {
                 console.log(e)
             }
-            setTimeout(()=>console.log(),10000)
-            errorLight(lights)
-
-          }, 5000);
-          return () => clearInterval(intervalId);
+        }, 5000);
+        return () => clearInterval(intervalId);
     }, [lights]);
     var clockLight = light==0?0:light.value;
     var colorLight = "rgb(236, 241, 50)";
@@ -151,9 +134,8 @@ function Light() {
 
                 </div>
                 <div className='filter'>
-
-                    <input className='filter__input' type="date" />
-                    <button className='filter__btn'>
+                    <input className='filter__input' type="date" onChange={(e) => {setSelectdate(e.target.value)}} />
+                    <button className='filter__btn' onClick={handlefilter}>
                         <i className="filter__icon fa-solid fa-filter"></i>
                     </button>
 

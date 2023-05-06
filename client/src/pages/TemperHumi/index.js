@@ -1,7 +1,5 @@
 import { React, useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import {useSelector} from "react-redux";
-import { putmessage } from "../../redux/apiRequest";
 import 'react-toastify/dist/ReactToastify.css';
 import TemperatureChart from "../../components/chart/TemperatureChart";
 import "./TemperHumi.css"
@@ -41,73 +39,48 @@ const showToastHumi = () => {
     });
 };
 
-
-
-
-async function errorTemper(tempers)
-{
-  
-    var dataTemper = tempers.length==0 ? 0 : tempers[0].value; 
-    if (dataTemper < 15 || dataTemper > 50)
-    {
-        showToastTemper()
-    }
-    
-    
-
-}
-
-async function errorHumi(humis)
-{
-   
-    var dataHumi= humis.length==0 ? 0 : humis[0].value;
-    if (dataHumi < 20 || dataHumi > 80)
-    showToastHumi()
-  
-
-
-}
-
-function TemperHumi()
-{
+function TemperHumi() {
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
-    const [tempers,setTemper]= useState([]);
-    const [humis,setHumi]= useState([]);
-    
-    useEffect(()=>{
-        setTimeout(()=>{
-            axios 
-            .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/humidity/data')
-            .then(response => 
-                {
-                    setHumi(response.data)
-                   
-                    
-                })
-            .catch(error => console.error(error))
-            axios 
-            .get('https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data')
-            .then(response =>{
-                setTemper(response.data)
-            })
-            .catch(error => console.error(error))
+    const user = useSelector((state) => state.auth_.login?.currentUser)
+    const dispatch = useDispatch()
+    let gettempers = useSelector((state) => state.IoT.temperature)
+    let gethumids = useSelector((state) => state.IoT.humidity)
+    const [tempers, setTempers] = useState(gettempers);
+    const [humis, setHumis] = useState(gethumids);
+    const [temper, setTemper] = useState(0);
+    const [humid, setHumid] = useState(0);
+    const [filter, setFilter] = useState(0);
+    const [selectdate, setSelectdate] = useState(new Date());
+    useEffect(() => {
+        const intervalId = setInterval(async () => {
+            try {
+                let date = new Date()
+                let year = date.getFullYear()
+                let month = date.getMonth() + 1
+                let day = date.getDate()
+                let temp = `${year}${month}${day}`
+                let latest = await updatetemperhumid(dispatch, temp)
+                setTemper(latest.temp)
+                setHumid(latest.humid)
+                if (filter == 0) {
+                    setTempers(gettempers)
+                    setHumis(gethumids)
+                    console.log("Run + Filter", filter)
+                }
+                console.log("Run1", filter)
+                errorTemper(temper)
+                errorHumi(humid)
+            }
+            catch (e) {
+                console.log("Fail", e)
+            }
+        }, 5000);
+        return () => clearInterval(intervalId);
+    }, [tempers, humis]);
 
-          
-           
-        },5000)
 
-        setTimeout(()=>console.log(),10000)
-        errorTemper(tempers)
-
-        setTimeout(()=>console.log(),10000)
-        errorHumi(humis)
-
-    },[tempers]);
-
-
-    var clockTemper = tempers.length==0 ? 0 : tempers[0].value;
-    var clockHumi= humis.length==0 ? 0 : humis[0].value;
-
+    var clockTemper = temper == 0 ? 0 : temper
+    var clockHumi = humid == 0 ? 0 : humid
     var colorTemper = clockTemper < 15 || clockTemper > 50 ? "#ff6384" : '#3ecdef';
     var colorHumi = clockHumi < 20 || clockHumi > 80 ? "#ff6384" : '#3ecdef';
 
@@ -231,8 +204,8 @@ function TemperHumi()
 
                 <div className='filter'>
                     {/* <h2 className='filter'>Filter </h2> */}
-                    <input className='filter__input' type="date" />
-                    <button className='filter__btn'>
+                    <input className='filter__input' type="date" onChange={(e) => { setSelectdate(e.target.value) }} />
+                    <button className='filter__btn' onClick={handlefilter}>
                         <i className="filter__icon fa-solid fa-filter"></i>
                     </button>
 
