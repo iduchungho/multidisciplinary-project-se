@@ -6,23 +6,23 @@ import water from "../../assets/water.jpg";
 import "./Dashboard.css";
 
 
-
 // const store1 = new UpdateDataStore(dispatcher);
 
 function Dashboard()
 {
 
+
     // công tắc đèn led
     const user = useSelector((state) => state.auth_.login?.currentUser)
     console.log(user)
     const [ledBtn, setLed]=useState(0);
-    const clickLed=()=>{
+    const clickLed= ()=>{
         setLed(!ledBtn);
     }
     
     // công tắc đèn fan
     const [fanBtn, setFan]=useState(0);
-    const clickFan=()=>{
+    const clickFan= ()=>{
          setFan(!fanBtn);
     }
 

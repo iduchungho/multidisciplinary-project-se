@@ -1,6 +1,9 @@
 import { React, useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {updatelight} from "../../redux/apiRequest"
+import LightChart from "../../components/chart/LightChart"
+import "./Light.css"
 import {useSelector, useDispatch} from "react-redux"
 import {
     CircularProgressbar,
@@ -11,8 +14,6 @@ import "react-circular-progressbar/dist/styles.css";
 import {update} from "../../redux/apiRequest"
 import LightChart from "../../components/chart/LightChart"
 import "./Light.css"
-
-
 
 
 
@@ -57,7 +58,7 @@ function Light() {
         const intervalId = setInterval(async () => {
             try
             {
-                await update(dispatch)
+                await updatelight(dispatch)
                 await setLight(light)
             }
             catch(e) {
@@ -121,6 +122,16 @@ function Light() {
                     pauseOnHover
                     theme="light"
                     />
+                    
+        
+                </div>
+                <div className='filter'>
+
+                    <input className='filter__input' type="date" />
+                    <button className='filter__btn'>
+                        <i className="filter__icon fa-solid fa-filter"></i>
+                    </button>
+
                 </div>
             </div>
         </div>
