@@ -154,59 +154,59 @@ function Dashboard() {
         return () => clearInterval(intervalId);
     }, [tempers]);
 
-    useEffect(() => {
-
-        var data = { value: 0 };
+    useEffect(()=>{
+       
+        var data = { value: 0 };  
         if (ledBtn) data.value = 1;
-
-
-        fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnled/data", {
-            method: 'POST',
-            headers: {
-                'X-AIO-Key': "aio_lHvG50bcjFwLBxfU8OF3O55Q1LRd",
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+       
+        
+        fetch( `${process.env.REACT_APP_API_LED}`, {
+        method: 'POST',
+        headers: {
+            'X-AIO-Key': `${process.env.REACT_APP_X_AIO_Key}` ,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
         })
-            .then(response => console.log(response.status))
-            .catch(error => console.error(error));
-    }, [ledBtn])
+        .then(response => console.log(response.status))
+        .catch(error => console.error(error));
+    },[ledBtn])
 
-    useEffect(() => {
-
-        var data = { value: 0 };
+    useEffect(()=>{
+       
+        var data = { value: 0 };  
         if (fanBtn) data.value = 1;
-
-
-        fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btnfan/data", {
-            method: 'POST',
-            headers: {
-                'X-AIO-Key': "aio_lHvG50bcjFwLBxfU8OF3O55Q1LRd",
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+       
+        
+        fetch(`${process.env.REACT_APP_API_FAN}`, {
+        method: 'POST',
+        headers: {
+            'X-AIO-Key': `${process.env.REACT_APP_X_AIO_Key}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
         })
-            .then(response => console.log(response.status))
-            .catch(error => console.error(error));
-    }, [fanBtn])
+        .then(response => console.log(response.status))
+        .catch(error => console.error(error));
+    },[fanBtn])
 
-    useEffect(() => {
-
-        var data = { value: 0 };
+    useEffect(()=>{
+       
+        var data = { value: 0 };  
         if (doorBtn) data.value = 1;
-
-
-        fetch("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/btndoor/data", {
-            method: 'POST',
-            headers: {
-                'X-AIO-Key': "aio_lHvG50bcjFwLBxfU8OF3O55Q1LRd",
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+       
+        
+        fetch( `${process.env.REACT_APP_API_DOOR}`, {
+        method: 'POST',
+        headers: {
+            'X-AIO-Key': `${process.env.REACT_APP_X_AIO_Key}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
         })
-            .then(response => console.log(response.status))
-            .catch(error => console.error(error));
-    }, [doorBtn])
+        .then(response => console.log(response.status))
+        .catch(error => console.error(error));
+    },[doorBtn])
 
 
 
