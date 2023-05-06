@@ -4,8 +4,8 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux"
 import mountain from "../../assets/mountain.jpg";
 import water from "../../assets/water.jpg";
-import { updatetemperhumid, putmessage } from '../../redux/apiRequest';
-import { cameraBtn, setCamera } from '../../redux/cameraAI';
+import { updatetemperhumid, putmessage,updateai } from '../../redux/apiRequest';
+
 
 import "./Dashboard.css";
 import 'react-toastify/dist/ReactToastify.css';
@@ -40,7 +40,11 @@ function Dashboard() {
     const dispatch = useDispatch()
     // công tắc đèn led
     const user = useSelector((state) => state.auth_.login?.currentUser)
-    console.log(user)
+   
+    // face AI
+    const [face, setFace] = useState("");
+
+
     const [ledBtn, setLed] = useState(0);
     const clickLed = async () => {
         let message = {
@@ -91,10 +95,25 @@ function Dashboard() {
         setDoor(!doorBtn);
     }
 
-    // face AI
-    const [face, setFace] = useState("");
+ 
     if (face == "Bao\n" && doorBtn == 0) {
-        setDoor(!doorBtn)
+        if (doorBtn == 0) 
+        {
+            let message = {
+                content: "Đóng cửa",
+                type: "1"
+            }
+            putmessage(message,user.data.id)
+        }
+        else if (doorBtn == 1)
+        {
+            let message = {
+                content: "Mở cửa",
+                type: "1"
+            }
+            putmessage(message,user.data.id)
+        }
+        setTimeout(()=>setDoor(!doorBtn), 1000)
     }
     // Kiểm tra quá ngưỡng
     async function errorTemper(temper) {
@@ -144,17 +163,33 @@ function Dashboard() {
                 let temp = `${year}${month}${day}`
                 let latest = await updatetemperhumid(dispatch, temp)
                 setTemper(latest.temp)
-                setHumi(latest.humid)
+                setHumi(latest.humid) 
                 await errorTemper(latest.temp)
                 await errorHumi(latest.humid)
+
+                axios 
+                .get(`${process.env.REACT_APP_API_AI}`)
+                .then(response => 
+                    {
+                        setFace(response.data[0].value)
+                       
+                    }
+                    )
+                .catch(error => console.error(error))
+
+               
+                
                 console.log("RUN")
             }
             catch (e) {
                 console.log("Fail", e)
             }
         }, 5000);
+  
         return () => clearInterval(intervalId);
+        
     }, [tempers]);
+
 
     useEffect(()=>{
        

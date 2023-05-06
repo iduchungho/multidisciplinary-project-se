@@ -1,6 +1,7 @@
 from keras.models import load_model  # TensorFlow is required for Keras to work
 import cv2  # Install opencv-python
 import numpy as np
+import threading
 import time
 
 
@@ -17,6 +18,7 @@ model = load_model("keras_model.h5")
 class_names = open("labels.txt", "r").readlines()
 
 # CAMERA can be 0 or 1 based on default camera of your computer
+
 
 
 
@@ -51,3 +53,6 @@ def faceAI():
 
 
 # avc
+
+
+

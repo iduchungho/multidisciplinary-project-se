@@ -1,3 +1,9 @@
 import { useState } from "react";
 
-export const [cameraBtn, setCamera]=useState(0);
+
+
+function Camera()
+{
+    const [cameraBtn, setCamera]=useState(0);
+}
+//export  

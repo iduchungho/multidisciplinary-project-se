@@ -1,8 +1,8 @@
 import {React, useState, useEffect} from 'react';
 import {useSelector} from "react-redux";
+import axios from 'axios';
 import WebcamCapture from "../../components/chart/WebcamCapture";
 import { putmessage } from '../../redux/apiRequest';
-import { cameraBtn, setCamera } from '../../redux/cameraAI';
 import noVideo from "../../assets/noVideo.png";
 
 
@@ -13,7 +13,37 @@ function Door()
 {
 
     const user = useSelector((state) => state.auth_.login?.currentUser)
-    const [doorBtn, setDoor]=useState(0);
+
+    // face AI
+    const [face, setFace] = useState("");
+    // camera
+    const [cameraBtn, setCamera]=useState(0);
+
+    useEffect(() => {
+        const intervalId = setInterval(async () => {
+            try {
+                
+                axios 
+                .get(`${process.env.REACT_APP_API_AI}`)
+                .then(response => 
+                    {
+                        setFace(response.data[0].value)
+                        
+                    }
+                    )
+                .catch(error => console.error(error))
+
+            }
+            catch (e) {
+                console.log("Fail", e)
+            }
+        }, 5000);
+  
+        return () => clearInterval(intervalId);
+        
+    }, [face]);
+
+        const [doorBtn, setDoor]=useState(0);
     const clickDoor = async()=> {
         setDoor(!doorBtn);
         if (doorBtn == 0) 
@@ -33,6 +63,31 @@ function Door()
             await putmessage(message,user.data.id)
         }
     }
+
+    if (cameraBtn==1)
+    {
+        if (face == "Bao\n" && doorBtn == 0) {
+            if (doorBtn == 0) 
+            {
+                let message = {
+                    content: "Đóng cửa",
+                    type: "1"
+                }
+                putmessage(message,user.data.id)
+            }
+            else if (doorBtn == 1)
+            {
+                let message = {
+                    content: "Mở cửa",
+                    type: "1"
+                }
+                putmessage(message,user.data.id)
+            }
+            setTimeout(()=>setDoor(!doorBtn), 1000)
+        }
+    }
+
+
 
     var speedFan= 120;
     const [fanBtn, setFan]=useState(0);
@@ -59,7 +114,7 @@ function Door()
     if (fanBtn === 0) speedFan=1;
     else speedFan= 10;
 
-    // const [cameraBtn, setCamera]=useState(0);
+
     const clickCamera= async()=>{
         setCamera(!cameraBtn);
 
@@ -134,7 +189,7 @@ function Door()
 
 
                     <div className='ai__content'>
-                        <div className='ai__content-heading'> AI : Bảo </div>
+                        <div className='ai__content-heading'> AI : {face} </div>
                        
                     </div>
 
