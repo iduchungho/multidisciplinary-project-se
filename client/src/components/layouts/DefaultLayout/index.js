@@ -151,13 +151,13 @@ function DefaultLayout() {
                   </div>
                   <div className="navbar__account">
                     <Link to="/user">
-                      {/* <img className="navbar__account-img" src={user.data.avatar} /> */}
+                      <img className="navbar__account-img" src={user.data.avatar} />
                     </Link>
                   </div>
                 </nav>
                 <div className="header__time">
                   <div className="header__time-greeting">
-                    {/* <span className="greeting1">Good morning, {user.data.firstname}</span> */}
+                    <span className="greeting1">Good morning, {user.data.firstname}</span>
                     <span className="greeting2">Have a nice day</span>
                   </div>
                   <div className="header__time-weather">

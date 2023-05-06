@@ -98,6 +98,7 @@ function TemperHumi()
 
         setTimeout(()=>console.log(),10000)
         errorTemper(tempers)
+
         setTimeout(()=>console.log(),10000)
         errorHumi(humis)
 
@@ -188,6 +189,15 @@ function TemperHumi()
                     theme="light"
                     />
                     {/* Same as */}
+
+                <div className='filter'>
+                    {/* <h2 className='filter'>Filter </h2> */}
+                    <input className='filter__input' type="date" />
+                    <button className='filter__btn'>
+                        <i className="filter__icon fa-solid fa-filter"></i>
+                    </button>
+                   
+                </div>
             </div>
         </div>
     )
