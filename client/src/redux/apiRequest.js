@@ -1,5 +1,6 @@
 import axios from "axios"
-import {updateStart, updateSuccess, updateFail} from "./IoTSlice"
+import { updatelightStart, updatelightSuccess, updatelightFailed,
+    updatetemperhumidStart, updatetemperhumidSuccess, updatetemperhumidFailed } from "./IoTSlice"
 import {
     loginFailed, loginStart, loginSuccess, registerStart, registerSuccess, registerFailed, logoutFailed, logoutStart, logoutSuccess,
     changeAvatarStart, changeAvatarSuccess, changeAvatarFailed, changeInforStart, changeInforSuccess, changeInforFailed,
@@ -11,7 +12,7 @@ export const login = async (user, dispatch, navigate) => {
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/api/user/login`, user, {
             withCredentials: true
-          });
+        });
         dispatch(loginSuccess(res.data))
         navigate("/dashboard")
     }
@@ -43,21 +44,32 @@ export const logout = async (dispatch, navigate) => {
         dispatch(logoutFailed())
     }
 }
-export const update = async (dispatch) => {
-    dispatch(updateStart())
+export const updatelight = async (dispatch, date) => {
+    dispatch(updatelightStart())
     try {
-        let humid = await axios.get("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/humidity/data", {responseType: 'json'})
-        let temp = await axios.get("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data", {responseType: 'json'})
-        let light = await axios.get("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/light/data", {responseType: 'json'})
+        let light = await axios.get("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/light/data", { responseType: 'json' })
+        const res = {
+            light: light.data
+        }
+        dispatch(updatelightSuccess(res))
+    }
+    catch (err) {
+        dispatch(updatelightFailed())
+    }
+}
+export const updatetemperhumid = async (dispatch, date) => {
+    dispatch(updatetemperhumidStart())
+    try {
+        let humid = await axios.get("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/humidity/data", { responseType: 'json' })
+        let temp = await axios.get("https://io.adafruit.com/api/v2/smartHomeIOT1/feeds/temperature/data", { responseType: 'json' })
         const res = {
             humid: humid.data,
             temp: temp.data,
-            light: light.data
         }
-        dispatch(updateSuccess(res))
+        dispatch(updatetemperhumidSuccess(res))
     }
     catch (err) {
-        dispatch(updateFail())
+        dispatch(updatetemperhumidFailed())
     }
 }
 export const changeavatar = async (new_avatar, dispatch, id) => {
@@ -99,5 +111,25 @@ export const changepass = async (changepass, dispatch, id) => {
     } catch (err) {
         dispatch(changePassFailed())
         alert("Change Password Failed")
+    }
+}
+export const putmessage = async (message, id) => {
+    try {
+        await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/api/action/log?id=${id}`, message, {
+            withCredentials: true
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
+export const getmessage = async (id) => {
+    try {
+        let message = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/action/get?id=${id}`, message, {
+            withCredentials: true
+        })
+        console.log("Message", message)
+        return message
+    } catch (err) {
+        console.log(err)
     }
 }

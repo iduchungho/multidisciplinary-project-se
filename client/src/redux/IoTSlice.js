@@ -10,21 +10,34 @@ export const IoTSlice = createSlice({
         error: false
     },
     reducers: {
-        updateStart: (state) => {
+        updatelightStart: (state) => {
             state.isFetching = true;
             state.error = false;
         },
-        updateSuccess: (state, action) => {
-            state.temparature = action.payload.temp;
-            state.humidity = action.payload.humid;
+        updatelightSuccess: (state, action) => {
             state.light = action.payload.light;
             state.isFetching = false;
         },
-        updateFail: (state) => {
+        updatelightFailed: (state) => {
+            state.isFetching = false;
+            state.error = true;
+        },
+        updatetemperhumidStart: (state) => {
+            state.isFetching = true;
+            state.error = false;
+        },
+        updatetemperhumidSuccess: (state, action) => {
+            state.temparature = action.payload.temp;
+            state.humidity = action.payload.humid;
+            state.isFetching = false;
+        },
+        updatetemperhumidFailed: (state) => {
             state.isFetching = false;
             state.error = true;
         }
     }
 })
-export const { updateStart, updateSuccess, updateFail } = IoTSlice.actions
+export const { updatelightStart, updatelightSuccess, updatelightFailed,
+    updatetemperhumidStart, updatetemperhumidSuccess, updatetemperhumidFailed
+} = IoTSlice.actions
 export default IoTSlice.reducer

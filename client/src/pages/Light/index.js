@@ -1,6 +1,9 @@
 import { React, useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {updatelight} from "../../redux/apiRequest"
+import LightChart from "../../components/chart/LightChart"
+import "./Light.css"
 import {useSelector, useDispatch} from "react-redux"
 import {
     CircularProgressbar,
@@ -55,7 +58,7 @@ function Light() {
         const intervalId = setInterval(async () => {
             try
             {
-                await update(dispatch)
+                await updatelight(dispatch)
                 await setLight(light)
             }
             catch(e) {
