@@ -35,7 +35,7 @@ function Light() {
     };
     
     
-    const errorLight = async (light) => {
+    async function errorLight (light) {
         if (light.value < 20 || light.value > 60) {
             showToastLight()
             let message = {

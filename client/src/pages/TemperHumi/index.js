@@ -43,6 +43,32 @@ function TemperHumi() {
     // lấy dữ liệu nhiệt độ và độ ẩm từ API 
     const user = useSelector((state) => state.auth_.login?.currentUser)
     const dispatch = useDispatch()
+    // Kiểm tra ngưỡng
+    async function errorTemper (temper) {
+        console.log(temper)
+        if (temper < 15 || temper > 50) {
+            showToastTemper()
+            let message = {
+                content: "Nhiệt độ quá ngưỡng",
+                type: "3"
+            }
+            await putmessage(message, user.data.id)
+            console.log("Check Temp", temper)
+        }
+    }
+    
+    async function errorHumi (humi) {
+        console.log(humi)
+        if (humi < 20 || humi > 80) {
+            showToastHumi()
+            let message = {
+                content: "Độ ẩm quá ngưỡng",
+                type: "3"
+            }
+            await putmessage(message, user.data.id)
+            console.log("Check Humi", humi)
+        }
+    }
     let gettempers = useSelector((state) => state.IoT.temperature)
     let gethumids = useSelector((state) => state.IoT.humidity)
     const [tempers, setTempers] = useState(gettempers);
@@ -68,8 +94,8 @@ function TemperHumi() {
                     console.log("Run + Filter", filter)
                 }
                 console.log("Run1", filter)
-                errorTemper(temper)
-                errorHumi(humid)
+                await errorTemper(latest.temp)
+                await errorHumi(latest.humid)
             }
             catch (e) {
                 console.log("Fail", e)
@@ -84,29 +110,6 @@ function TemperHumi() {
     var colorTemper = clockTemper < 15 || clockTemper > 50 ? "#ff6384" : '#3ecdef';
     var colorHumi = clockHumi < 20 || clockHumi > 80 ? "#ff6384" : '#3ecdef';
 
-    // Kiểm tra ngưỡng
-    const errorTemper = async (temper) => {
-        if (temper < 15 || temper > 50) {
-            showToastTemper()
-            let message = {
-                content: "Nhiệt độ quá ngưỡng",
-                type: "3"
-            }
-            await putmessage(message, user.data.id)
-        }
-    }
-    
-    const errorHumi = async (humi) => {
-    
-        if (humi < 20 || humi > 80) {
-            showToastHumi()
-            let message = {
-                content: "Độ ẩm quá ngưỡng",
-                type: "3"
-            }
-            await putmessage(message, user.data.id)
-        }
-    }
     // xử lý dữ liệu đồ thị
 
     var data1 = []
