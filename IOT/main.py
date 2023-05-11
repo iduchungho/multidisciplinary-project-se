@@ -4,7 +4,7 @@ import time
 import random
 from dotenv import load_dotenv
 import os
-from faceAI import faceAI
+# from faceAI import faceAI
 
 load_dotenv()
 AIO_FEED_ID = ["btnled", "btndoor", "btnfan"]
@@ -46,7 +46,7 @@ while True:
         print("Publish data to server Adafruit")
         time.sleep(5)
         print("Publish face AI")
-        client.publish("ai",faceAI())
+        # client.publish("ai",faceAI())
         time.sleep(5)
         print("Publish temperature")
         client.publish("temperature", random.randint(28, 38))
