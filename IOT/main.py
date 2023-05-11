@@ -4,7 +4,7 @@ import time
 import random
 from dotenv import load_dotenv
 import os
-from faceAI import faceAI
+# from faceAI import faceAI
 
 load_dotenv()
 AIO_FEED_ID = ["btnled", "btndoor", "btnfan"]
