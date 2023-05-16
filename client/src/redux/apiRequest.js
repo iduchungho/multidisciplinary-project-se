@@ -37,7 +37,7 @@ export const register = async (user, dispatch, navigate) => {
 export const logout = async (dispatch, navigate) => {
     dispatch(logoutStart())
     try {
-        const logout = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/user/logout`, {
+        await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/user/logout`, {
             withCredentials: true
         })
         dispatch(logoutSuccess())
@@ -56,11 +56,19 @@ export const updatelight = async (dispatch, date) => {
         const res = {
             light: light.data.message.payload
         }
-        dispatch(updatelightSuccess(res))
-        return light.data.message.latest
+        if (light === undefined || light.data.message.payload === undefined) {
+            res.light = []
+            dispatch(updatelightSuccess(res))
+            return 0
+        }
+        else {
+            dispatch(updatelightSuccess(res))
+            return light.data.message.latest
+        }
     }
     catch (err) {
         dispatch(updatelightFailed())
+        return 0
     }
 }
 
@@ -79,19 +87,27 @@ export const updatetemperhumid = async (dispatch, date) => {
             humid: humid.data.message.payload,
             temp: temp.data.message.payload,
         }
-        dispatch(updatetemperhumidSuccess(res))
         const result = {
             temp: temp.data.message.latest.value,
             humid: humid.data.message.latest.value
         }
+        if (temp === undefined || temp.data.message.payload === undefined) {
+            res.temp = []
+            result.temp = 0
+        }
+        if (humid === undefined || humid.data.message.payload === undefined) {
+            res.humid = []
+            result.humid = 0
+        }
+        dispatch(updatetemperhumidSuccess(res))
         return result
     }
     catch (err) {
         dispatch(updatetemperhumidFailed())
         console.log("Failed", err)
         const result = {
-            temp: [],
-            humid: []
+            temp: 0,
+            humid: 0
         }
         return result
     }

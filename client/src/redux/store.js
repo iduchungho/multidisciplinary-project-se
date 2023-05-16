@@ -1,13 +1,6 @@
-// import { configureStore } from "@reduxjs/toolkit";
 import IoTReducer from "./IoTSlice";
 import authReducer from "./authSlice";
-// const store = configureStore({
-//   reducer: {
-//     IoT: IoTReducer
-//   }
-// });
 
-// export default store;
 
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {

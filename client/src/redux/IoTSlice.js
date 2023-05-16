@@ -21,6 +21,7 @@ export const IoTSlice = createSlice({
         updatelightFailed: (state) => {
             state.isFetching = false;
             state.error = true;
+            state.light = [];
         },
         updatetemperhumidStart: (state) => {
             state.isFetching = true;
@@ -34,6 +35,8 @@ export const IoTSlice = createSlice({
         updatetemperhumidFailed: (state) => {
             state.isFetching = false;
             state.error = true;
+            state.humidity = [];
+            state.temperature = [];
         }
     }
 })

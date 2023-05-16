@@ -35,14 +35,16 @@ function Light() {
     };
     
     
-    async function errorLight (light) {
-        if (light.value < 20 || light.value > 60) {
-            showToastLight()
-            let message = {
-                content: "Ánh sáng quá ngưỡng",
-                type: "3"
+    async function errorLight (check) {
+        if (check != undefined){
+            if (check.value < 20 || check.value > 60) {
+                showToastLight()
+                let message = {
+                    content: "Ánh sáng quá ngưỡng",
+                    type: "3"
+                }
+                await putmessage(message, user.data.id)
             }
-            await putmessage(message, user.data.id)
         }
     }
     useEffect(() => {
@@ -68,7 +70,9 @@ function Light() {
         }, 5000);
         return () => clearInterval(intervalId);
     }, [lights]);
-    var clockLight = light==0?0:light.value;
+    if (light == undefined) setLight(0)
+    // var clockLight = light==0?0:light.value;
+    var clockLight = 0;
     var colorLight = "rgb(236, 241, 50)";
 
     // xử lý dữ liệu đồ thị
