@@ -1,14 +1,16 @@
 package utils
 
 import (
-	"github.com/pkg/errors"
+	"fmt"
 	model "smhome/app/models"
 	repo "smhome/pkg/repository"
 	"strconv"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
-func SensorDataStat(sens model.SensorData) (interface{}, error) {
+func SensorDataStat(sens model.SensorData, date string) (interface{}, error) {
 	type payload struct {
 		Value string `json:"value"`
 		Id    string `json:"id"`
@@ -33,6 +35,10 @@ func SensorDataStat(sens model.SensorData) (interface{}, error) {
 	data.Latest = sens.Payload[0]
 	timeHour := time.Now().Hour()
 	index := len(sens.Payload) - 1
+	timeid := fmt.Sprintf("%d%d%d", time.Now().Year(), time.Now().Month(), time.Now().Day())
+	if date != timeid {
+		timeHour = 24
+	}
 
 	for i := 0; i < timeHour; i++ {
 		if index < 0 {

@@ -48,7 +48,7 @@ func SensorStats(c *fiber.Ctx) error {
 			"success": false,
 		})
 	}
-	res, _ := utils.SensorDataStat(*data)
+	res, _ := utils.SensorDataStat(*data, date)
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": res,
 		"success": true,

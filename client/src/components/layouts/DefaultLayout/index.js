@@ -6,6 +6,7 @@ import "../../base.css";
 import sun from "../../../assets/sun.png";
 import cloudy from "../../../assets/cloudy.png";
 import night from "../../../assets/night.png";
+import avt from "../../../assets/avatar.jpg";
 import { logout } from "../../../redux/apiRequest.js"
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -151,7 +152,7 @@ function DefaultLayout() {
                   </div>
                   <div className="navbar__account">
                     <Link to="/user">
-                      <img className="navbar__account-img" src={user.data.avatar} />
+                      <img className="navbar__account-img" src={user.data.avatar=="None"?avt:user.data.avatar} />
                     </Link>
                   </div>
                 </nav>

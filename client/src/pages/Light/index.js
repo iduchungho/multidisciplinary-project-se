@@ -36,13 +36,12 @@ function Light() {
     
     
     async function errorLight (light) {
-        if (light.value < 20 || light.value > 400) {
+        if (light< 20 || light > 400) {
             showToastLight()
             let message = {
                 content: "Ánh sáng quá ngưỡng",
                 type: "3"
             }
-            await putmessage(message, user.data.id)
         }
     }
     useEffect(() => {
@@ -57,18 +56,21 @@ function Light() {
                 setLight(latest)
                 if (filter == 0) {
                     setLights(getlights)
-                    console.log("Run")
+                   
                 }
                 errorLight(latest) 
-                console.log("Run1")
+                
             }
             catch (e) {
-                console.log(e)
+                
             }
         }, 5000);
         return () => clearInterval(intervalId);
     }, [lights]);
-    var clockLight = light==0?0:light.value;
+    if (light == undefined) setLight(0)
+    
+    var clockLight = light;
+    console.log("Check", light)
     var colorLight = "rgb(236, 241, 50)";
 
     // xử lý dữ liệu đồ thị
