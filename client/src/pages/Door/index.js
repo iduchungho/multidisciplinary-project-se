@@ -64,7 +64,8 @@ function Door()
         }
     }
 
-    if (cameraBtn==1)
+    // if (cameraBtn==1 || )
+    if (1)
     {
         if (face == "Bao\n" && doorBtn == 0) {
             if (doorBtn == 0) 

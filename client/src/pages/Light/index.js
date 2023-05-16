@@ -36,7 +36,7 @@ function Light() {
     
     
     async function errorLight (light) {
-        if (light.value < 20 || light.value > 60) {
+        if (light.value < 20 || light.value > 400) {
             showToastLight()
             let message = {
                 content: "Ánh sáng quá ngưỡng",
@@ -107,7 +107,7 @@ function Light() {
                     <div className='clock-temperature'>
                         <CircularProgressbar
                             value={clockLight / 500 * 100}
-                            text={`${clockLight}%`}
+                            text={`${clockLight}lux`}
                             strokeWidth={8}
                             styles={buildStyles({
                                 pathColor: colorLight,
