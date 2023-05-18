@@ -20,12 +20,12 @@ FACULTY OF COMPUTER SCIENCE AND ENGINEERING
 
 ## Team Members
 
-|  No | ID  | Name | Email |
-| --- | --- |  --- |  ---  |
-|  1  |  2013381   |  Hồ Đức Hưng    |   hung.hoduccse@hcmut.edu.vn    |
-|  2  |  2012734   |   Lâm Điền Chinh |   chinh.lamdien2002@hcmut.edu.vn     |
-|  3  |  2012670   |Nguyễn Lê Minh Bảo      |  bao.nguyenminhbaott5@hcmut.edu.vn      |
-|  4  |  2011408   | Bùi Anh Khoa    |  khoa.bui140@hcmut.edu.vn      |
+|  No | ID  | Name | Email | Role |
+| --- | --- |  --- |  ---  | --- |
+|  1  |  2013381   |  Hồ Đức Hưng    |   hung.hoduccse@hcmut.edu.vn    | Backend |
+|  2  |  2012734   |   Lâm Điền Chinh |   chinh.lamdien2002@hcmut.edu.vn     | Frontend |
+|  3  |  2012670   |Nguyễn Lê Minh Bảo      |  bao.nguyenminhbaott5@hcmut.edu.vn      | Frontend |
+|  4  |  2011408   | Bùi Anh Khoa    |  khoa.bui140@hcmut.edu.vn      | IOT Hardware | 
 
 #### update git mới nhất
 `git pull --rebase`
