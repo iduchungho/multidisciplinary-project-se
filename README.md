@@ -13,7 +13,7 @@ FACULTY OF COMPUTER SCIENCE AND ENGINEERING
 
 **Thực tập đồ án môn học đa ngành - Công nghệ phần mềm**
 
-**Tháng 9 - Học kì 221**
+**Tháng 5/2023 - Học kì 222**
 **(2022-2023)**
 
 </div>
